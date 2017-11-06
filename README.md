@@ -1,3 +1,3 @@
 # ProjektBaza
 
-Seminarska pri podatkovnih bazah
+Seminarska pr podatkovnih bazah
