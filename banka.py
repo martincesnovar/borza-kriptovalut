@@ -60,7 +60,7 @@ class BancniTerminal:
             return
             
     def dodajOsebo(self):
-        print("Zdaj bi rad dodal osebo.")
+        print("Zdaj bi rad dodal osebo. ")
         self.menu = "glavni"
 
     def izpisRacunov(self):
