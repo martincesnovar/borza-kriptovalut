@@ -49,22 +49,20 @@ def poisci_lastnika(ime, priimek):
 #                                                                         #
 ###########################################################################
 
-def dodaj_lastnika_kriptovalute(ime, priimek):
+def dodaj_lastnika(ime, priimek):
     '''funkcija doda novega lastnika in sicer osnovne podatke'''
     sql = ''' INSERT INTO osebe (ime, priimek)
               VALUES (?,?)'''
-    leto = int(datum_rojstva.split('/')[2])
-    danes = int(str(datetime.datetime.now()).split('-')[0])
-    con.execute(sql, [ime, priimek, datum_rojstva, spol, celica])
+    con.execute(sql, [ime, priimek])
     con.commit()
 
 
 
 def kupi_valuto(lastnik, valuta, vrednost, datum = datetime.datetime.now()):
     ''' funkcija doda kriptovaluto lastniku'''
-    sql2 = '''INSERT INTO lastnistvo_valut (lastnik, valuta, vrednost, Datum)
+    sql = '''INSERT INTO lastnistvo_valut (lastnik, valuta, vrednost, Datum)
               VALUES (?,?,?,?)'''
-    con.execute(sql2,[lastnik, valuta, vrednost, datum])
+    con.execute(sql,[lastnik, valuta, vrednost, datum])
     con.commit()
 
 
@@ -76,10 +74,3 @@ def kupi_valuto(lastnik, valuta, vrednost, datum = datetime.datetime.now()):
 #                                                                         #
 ###########################################################################
 
-
-
-
-
-
-
-    
