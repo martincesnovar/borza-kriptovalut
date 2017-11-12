@@ -6,4 +6,5 @@ import modeli
 @route('/')
 def domov():
     pass
+
 run(debug=True)
