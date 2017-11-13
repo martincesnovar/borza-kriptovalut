@@ -1,4 +1,4 @@
-# Banka
+# Borza kriptovalut
 
 seminarska naloga pri predmetu Podatkovne baze 1
 
