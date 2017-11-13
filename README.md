@@ -1,3 +1,11 @@
-# Borza kriptovalut
+# Banka
 
-Seminarska pri podatkovnih bazah
+seminarska naloga pri predmetu Podatkovne baze 1
+
+## Zagon
+
+Program zaženemo tako, da zaženemo program `kriptovalute.py`.
+
+## ER diagram
+
+![ER diagram](valute.png)
