@@ -1,10 +1,18 @@
-import urllib.request, json
+import urllib.request, json, time
 
-naslovi = 'https://www.bitstamp.net/api/ticker_hour/'
+naslov = 'https://www.bitstamp.net/api/ticker_hour/'
 
-def json_from_web(stran):
+def dobi_podatke(stran):
     '''Dobi podatke iz spleta in jih pretvori v slovar'''
     with urllib.request.urlopen(stran) as url:
-        data = json.loads(url.read().decode())
-        return data
-            
+        podatki = json.loads(url.read().decode())
+    cas = datum(podatki.get('timestamp'))
+    podatki['datetime'] = cas
+    return podatki
+
+          
+def datum(podatki):
+    '''pretvori in vrne čas v obliki (leto, mesec, dan, ura, min, sek,_ ,_)'''
+    if podatki is not None:
+        return time.gmtime(int(podatki))[:]
+    return time.gmtime()[:]

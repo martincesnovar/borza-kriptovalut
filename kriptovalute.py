@@ -3,8 +3,9 @@ import modeli
 
 ################################################
 # PRVA 
-@route('/')
-def domov():
-    pass
 
-run(debug=True)
+@get('/')
+def glavniMenu():
+    return template('glavni.html')
+
+run(host = 'localhost', port=8080)
