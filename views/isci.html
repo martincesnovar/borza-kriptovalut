@@ -1,0 +1,19 @@
+%rebase ('osnova.html', naslov='Iskanje', navigator='/ Iskanje')
+    <div class="vrstica">
+      <table>
+        <tr>
+          <th>ID</th>
+          <th>Ime</th>
+          <th>Priimek</th>
+          <th>Mail</th>
+        </tr>
+        %for id, ime, priimek, mail in rezultat:
+        <tr>
+          <td><a href="/oseba/{{id}}">{{id}}</a></td>
+          <td>{{ime}}</td>
+          <td>{{priimek}}</td>
+          <td>{{mail}}</td>
+        </tr>
+        %end
+      </table>
+    </div>

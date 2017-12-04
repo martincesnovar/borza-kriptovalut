@@ -1,0 +1,8 @@
+%rebase ('osnova.html', naslov='Oseba', navigator='/ Oseba')
+    <div class="vrstica">
+      ID: {{id}}<br />
+      Valute:
+      %for valuta in valute:
+        {{valuta}}
+      %end
+    </div>

@@ -1,6 +1,7 @@
 import urllib.request, json, time
 
 naslov = 'https://www.bitstamp.net/api/ticker_hour/'
+valute = 'https://bittrex.com/api/v1.1/public/getcurrencies'
 
 def dobi_podatke(stran):
     '''Dobi podatke iz spleta in jih pretvori v slovar'''
