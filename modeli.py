@@ -55,8 +55,8 @@ def poisci_osebo(ime, priimek):
     ''' funkcija poisce lastnike, ki imajo skupne podatke ime, priimek'''
     sql =''' SELECT id, ime, priimek, mail, stanje FROM oseba WHERE ime LIKE ? AND priimek LIKE ? '''
     sezOseb = []
-    for id, ime, priimek, mail, stanje in con.execute(sql, ['%'+ime+'%', '%'+priimek+'%']):
-        sezOseb.append([id, ime, priimek, mail, stanje])
+    for id, ime, priimek, mail, geslo in con.execute(sql, ['%'+ime+'%', '%'+priimek+'%']):
+        sezOseb.append([id, ime, priimek, mail, geslo])
     return sezOseb
 
 def dolzniki():

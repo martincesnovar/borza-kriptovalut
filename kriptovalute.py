@@ -9,10 +9,10 @@ def glavniMenu():
 def static(filename):
     return static_file(filename, root='static')
 
-@get('/oseba/<id>')
-def oOsebi(id):
-    racuni = None
-    return template('oseba.html', racuni = racuni)
+@get('/oseba/<id_st>')
+def oOsebi(id_st):
+    id, ime, priimek, mail, geslo = modeli.podatki(id_st)
+    return template('oseba.html', id=id, ime = ime, priimek=priimek, mail=mail)
 
 @get('/isci')
 def isci():
@@ -21,19 +21,20 @@ def isci():
     return template('isci.html', rezultat = rezultat)
 
 @get('/registracija')
-def glavni():
+def glavni_r():
     return template('registriraj.html', ime = None, priimek = None, mail = None, napaka=None, geslo = None)
 
-@get('/registracija')
+@post('/registracija')
 def dodaj():
     ime = request.forms.ime
     priimek = request.forms.priimek
     mail = request.forms.mail
     geslo = request.forms.geslo
-    modeli.dodaj_osebo(ime, priimek, mail, geslo)
-    id_1 = modeli.id_st(mail)
-    redirect('/oseba/'+str(id_1))
-    return template('registriraj.html', ime = ime, priimek = priimek, mail = mail, geslo = geslo, napaka=None)
+    if ime and priimek and mail and geslo:
+        modeli.dodaj_osebo(ime, priimek, mail, geslo)
+        id_1 = modeli.id_st(mail)
+        redirect('/oseba/'+str(id_1))
+        return template('registriraj.html', ime = ime, priimek = priimek, mail = mail, geslo = geslo, napaka=None)
 
 @get('/prijava')
 def glavni():
@@ -45,7 +46,6 @@ def glavni_p():
     mail = request.forms.mail
     geslo = request.forms.geslo
     id_s = modeli.id_st(mail)
-
     podatki =modeli.podatki(id_s)
     if podatki is not None:
         _, _, _, email, psw = podatki
