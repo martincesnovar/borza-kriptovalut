@@ -1,12 +1,48 @@
-%rebase ('osnova.html', naslov='Registracija', navigator='/registracija')
+%rebase ('osnova.html', naslov='registracija', navigator='/registracija')
     <div class="vrstica">
-      <form method="post" action="/Registracija">
-        Ime: <input type="text" name="ime" value="{{ime}}"/><br />
-        Priimek: <input type="text" name="priimek" value="{{priimek}}"/><br />
-        E-mail: <input type="text" name="mail" value="{{mail}}"/><br />
-		Geslo: <input type="password" name="geslo" value="{{geslo}}"/><br />
-        <input type="submit" value="Registracija" name="Registracija"
-          style="margin-left: 20px;margin-top: 2px;"/>
+      <form method="post" action="/registracija">
+		  <table>
+				<tr>
+					<td class="glava">
+					  Ime:
+					</td>
+					<td>
+					  <input type="text" name="ime" value="{{ime}}" placeholder = "Vnesi ime"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="glava">
+					  Priimek:
+					</td>
+					<td>
+					  <input type="text" name="priimek" value="{{priimek}}" placeholder = "Vnesi priimek"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="glava">
+					  Mail
+					</td>
+					<td>
+					  <input type="text" name="mail" value="{{mail}}" placeholder = "Vnesi email"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="glava">
+					  Geslo
+					</td>
+					<td>
+					  <input type="password" name="geslo" value="{{geslo}}" placeholder = "Vnesi geslo"/>
+					</td>
+				</tr>
+				<tr>
+                <td>
+                    &nbsp;
+                </td>
+                <td class="gumb_dodaj">
+                  <input type="submit" value="registracija" name="registracija" class="gumbi"/>
+                </td>
+            </tr>
+        </table>
       </form>
     </div>
     %if napaka is not None:
@@ -14,3 +50,4 @@
     Napaka: {{napaka}}
     </div>
     %end
+	

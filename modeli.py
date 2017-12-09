@@ -8,6 +8,14 @@ con = sqlite3.connect('Kriptovalute.db')
 #                                                                         #
 ###########################################################################
 
+def podatki(id_st):
+    '''funckija vrne ime lastnika z id_st-jem id'''
+    sql = '''SELECT *
+            FROM oseba
+            WHERE id = ?'''
+    for pod in con.execute(sql,[id_st]):
+        return pod
+
 def ime(id_st):
     '''funckija vrne ime lastnika z id_st-jem id'''
     sql = '''SELECT ime
@@ -67,11 +75,11 @@ def dolzniki():
 #                                                                         #
 ###########################################################################
 
-def dodaj_osebo(ime, priimek, mail, stanje = 0):
+def dodaj_osebo(ime, priimek, mail, geslo):
     '''funkcija doda novega lastnika in sicer osnovne podatke'''
-    sql = ''' INSERT INTO oseba (ime, priimek, mail, stanje)
+    sql = ''' INSERT INTO oseba (ime, priimek, mail, geslo)
               VALUES (?,?,?,?)'''
-    con.execute(sql, [ime, priimek, mail, stanje])
+    con.execute(sql, [ime, priimek, mail, geslo])
     con.commit()
 
 def dodaj_valuto(ime):
@@ -97,7 +105,7 @@ def kupi_valuto(lastnik, valuta, vrednost, datum = datetime.datetime.now()):
 #                                                                         #
 ###########################################################################
 
-def prodaj_valuto(lastnik, valuta, datum = datetime.datetime.now()):
+def prodaj_valuto(lastnik, vrednost, datum = datetime.datetime.now()):
     ''' funkcija proda kriptovaluto lastniku'''
     sql = '''DELETE FROM lastnistvo_valut
             '''

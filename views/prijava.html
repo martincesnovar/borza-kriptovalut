@@ -1,10 +1,32 @@
 %rebase ('osnova.html', naslov='Prijava', navigator='/prijava')
     <div class="vrstica">
-      <form method="get" action="/prijava">
-        E-mail: <input type="text" name="mail" value="{{mail}}"/><br />
-		Geslo: <input type="password" name="geslo" value="{{geslo}}"/><br />
-        <input type="submit" value="Prijava" name="Prijava"
-          style="margin-left: 20px;margin-top: 2px;"/>
+      <form method="post" action="/prijava">
+		<table>
+			<tr>
+				<td class="glava">
+					Mail
+				</td>
+				<td>
+					<input type="text" name="mail" value="{{mail}}" placeholder = "Vnesi mail"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="glava">
+					Geslo
+				</td>
+				<td>
+					<input type="password" name="geslo" value="{{geslo}}" placeholder = "Vnesi geslo"/><br />
+				</td>
+			</tr>
+			<tr>
+				<td>
+                    &nbsp;
+                </td>
+                <td class="gumbi">
+                  <input type="submit" value="Prijava" name="prijava" class="gumbi"/>
+                </td>
+            </tr>
+        </table>
       </form>
     </div>
     %if napaka is not None:
