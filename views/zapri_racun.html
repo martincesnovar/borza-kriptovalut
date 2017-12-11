@@ -1,0 +1,40 @@
+%rebase ('osnova.html', naslov='zapri_račun', navigator='/zapri_račun')
+	<div>
+		<h3>Zaprli boste račun, vsi podatki bodo trajno izgubljeni!</h3>
+	</div>
+    <div class="vrstica">
+      <form method="post" action="/zapri_racun">
+		  <table>
+				<tr>
+					<td class="glava">
+					  Mail
+					</td>
+					<td>
+					  <input type="text" name="mail" value="{{mail}}" placeholder = "Vnesi email"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="glava">
+					  Geslo
+					</td>
+					<td>
+					  <input type="password" name="geslo" value="{{geslo}}" placeholder = "Vnesi geslo"/>
+					</td>
+				</tr>
+				<tr>
+                <td>
+                    &nbsp;
+                </td>
+                <td class="gumb_dodaj">
+                  <input type="submit" value="Zapri račun" name="zapri" class="gumbi"/>
+                </td>
+            </tr>
+        </table>
+      </form>
+    </div>
+    %if napaka is not None:
+    <div class="vrstica napaka">
+    Napaka: {{napaka}}
+    </div>
+    %end
+	

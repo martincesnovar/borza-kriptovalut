@@ -1,7 +1,37 @@
 %rebase ('osnova.html', naslov='Oseba', navigator='/ Oseba')
+	
     <div class="vrstica">
       ID: {{id}} <br/>
 	  Ime: {{ime}}<br/>
 	  Priimek: {{priimek}}<br/>
       Valute:
+	  <button id="myBtn">Kupi kriptovalute</button>
+	</div>
+
+	<!-- The Modal -->
+	<div id="myModal" class="modal">
+	
+
+  <!-- Modal content -->
+	<div class="modal-content">
+		<div class="modal-header">
+		  <span class="close">&times;</span>
+		  <h3>Izberi valuto</h3>
+		</div>
+		<div class="modal-body">
+		  <p>Kriptovalute</p>
+		</div>
+		<div class="modal-footer">
+		  <!--BUY cancel buttons-->
+		</div>
+	  </div>
+	  
+	  <link href="/static/kriptovalute.css" rel="stylesheet">
+	  <script src="/static/kriptovalute.js"></script> 
     </div>
+	
+	<div class = 'vrstica'>
+	<form method="post" action="/zapri_racun">
+		<input id="QUIT" type="submit" value="Zapri račun" name="Zapri" class="gumbi"/>
+	</form>
+	</div>

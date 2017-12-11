@@ -11,8 +11,9 @@ def static(filename):
 
 @get('/oseba/<id_st>')
 def oOsebi(id_st):
-    id, ime, priimek, mail, geslo = modeli.podatki(id_st)
-    return template('oseba.html', id=id, ime = ime, priimek=priimek, mail=mail)
+    if modeli.podatki(id_st) is not None:
+        id, ime, priimek, mail, geslo = modeli.podatki(id_st)
+        return template('oseba.html', id=id, ime = ime, priimek=priimek, mail=mail)
 
 @get('/isci')
 def isci():
@@ -39,7 +40,7 @@ def dodaj():
 @get('/prijava')
 def glavni():
     return template('prijava.html', mail = None, napaka=None, geslo = None)
-    
+
 
 @post('/prijava')
 def glavni_p():
@@ -56,6 +57,23 @@ def glavni_p():
             return template('prijava.html', mail=None, geslo=None, napaka='Neveljavna prijava')
     else:
         return template('prijava.html', mail = None, geslo = None, napaka = 'Neveljavna prijava')
+
+
+@post('/zapri_racun')
+def odstrani():
+    mail = request.forms.mail
+    geslo = request.forms.geslo
+    id = modeli.id_st(mail)
+    podatki = modeli.podatki(id)
+    if podatki is not None:
+        id_s, _, _, email, psw = podatki
+        if email == mail and geslo == psw and id==id_s:
+            modeli.zbrisi_osebo(id)
+            redirect('/')
+            return template('zapri_racun.html', mail=mail, geslo=geslo,napaka=None)
+        return template('zapri_racun.html', mail=mail, geslo=geslo, napaka='Nepravilno mail/geslo')
+    return template('zapri_racun.html', mail=mail, geslo=geslo, napaka=None)
+
 
 
 # poženemo strežnik na portu 8080, glej http://localhost:8080/
