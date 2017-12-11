@@ -15,11 +15,17 @@ def oOsebi(id_st):
         id, ime, priimek, mail, geslo = modeli.podatki(id_st)
         return template('oseba.html', id=id, ime = ime, priimek=priimek, mail=mail)
 
+@get('/administrator')
+def administrator():
+    rezultat = modeli.podatki_vsi()
+    return template('administrator.html', rezultat=rezultat)
+
 @get('/isci')
 def isci():
-    priimek = request.query.iskalniNiz
-    rezultat = modeli.poisciPriimek(priimek)
-    return template('isci.html', rezultat = rezultat)
+    id_st = request.query.iskalniNiz
+    rezultat = modeli.podatki(id_st)
+    if rezultat is not None:
+        return template('isci.html', rezultat = rezultat)
 
 @get('/registracija')
 def glavni_r():

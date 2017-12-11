@@ -1,12 +1,19 @@
 import sqlite3
 import datetime
 con = sqlite3.connect('Kriptovalute.db')
+cur = con.cursor()
 
 ###########################################################################
 #                                                                         #
 #                           OSEBNI PODATKI LASTNIKA                       #
 #                                                                         #
 ###########################################################################
+
+def podatki_vsi():
+    '''funckija vrne vse lastnike'''
+    sql = '''SELECT * FROM oseba'''
+    cur = con.execute(sql)
+    return cur.fetchall()
 
 def podatki(id_st):
     '''funckija vrne ime lastnika z id_st-jem id'''

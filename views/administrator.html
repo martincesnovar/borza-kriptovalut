@@ -1,22 +1,16 @@
-%rebase ('osnova.html', naslov='Iskanje', navigator='/ Iskanje')
+%rebase ('osnova.html', naslov='Administrator', navigator='/ Administrator')
     <div class="naslov_strani">
        Izpis komitentov
     </div>
 	
 	<div class="vrstica">
-      <span class="napis">Išči osebo:</span>
-      <form method="get" action="/isci">
-            <input type="text" name="iskalniNiz"/>
-            <input type="submit" value="Išči" name="isci" class="gumbi"/>
-      </form>
-    </div>
-
-    <div class="vrstica">
-      <table cellspacing="0" cellpadding="0">
+      <table>
         <tr>
           <th>ID</th>
           <th>Ime</th>
           <th>Priimek</th>
+		  <th>Mail</th>
+		  <th>Geslo</th>
         </tr>
         %for id, ime, priimek, email, geslo in rezultat:
         <tr>
