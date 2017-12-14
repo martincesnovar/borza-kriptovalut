@@ -1,4 +1,4 @@
-import modeli
+import modeli, dobi_zneske
 from bottle import *
 
 @get('/')
@@ -13,7 +13,8 @@ def static(filename):
 def oOsebi(id_st):
     if modeli.podatki(id_st) is not None:
         id, ime, priimek, mail, geslo = modeli.podatki(id_st)
-        return template('oseba.html', id=id, ime = ime, priimek=priimek, mail=mail)
+        valute = dobi_zneske.vrednost_valut()
+        return template('oseba.html', id=id, ime = ime, priimek=priimek, mail=mail,valute=valute)
 
 @get('/administrator')
 def administrator():
@@ -57,13 +58,17 @@ def glavni_p():
     if podatki is not None:
         _, _, _, email, psw = podatki
         if email == mail and geslo == psw:
-            redirect('/oseba/'+str(id_s))
+            redirect('/oseba/<id_s>')
             return template('prijava.html', mail = mail, napaka=None, geslo = geslo)
         else:
             return template('prijava.html', mail=None, geslo=None, napaka='Neveljavna prijava')
     else:
         return template('prijava.html', mail = None, geslo = None, napaka = 'Neveljavna prijava')
 
+
+@get('/zapri_racun')
+def odstrani_g():
+    return template('zapri_racun.html',mail=None,geslo=None,napaka=None)
 
 @post('/zapri_racun')
 def odstrani():
@@ -77,10 +82,11 @@ def odstrani():
             modeli.zbrisi_osebo(id)
             redirect('/')
             return template('zapri_racun.html', mail=mail, geslo=geslo,napaka=None)
+        redirect('/zapri_racun')
         return template('zapri_racun.html', mail=mail, geslo=geslo, napaka='Nepravilno mail/geslo')
-    return template('zapri_racun.html', mail=mail, geslo=geslo, napaka=None)
+    return template('zapri_racun.html', mail=None, geslo=None, napaka=None)
 
-
+                     
 
 # poženemo strežnik na portu 8080, glej http://localhost:8080/
 run(host='localhost', port=8080,debug=True, reloader=True) #problem reloader idle

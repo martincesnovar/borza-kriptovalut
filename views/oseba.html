@@ -20,9 +20,33 @@
 		</div>
 		<div class="modal-body">
 		  <p>Kriptovalute</p>
+		  <table>
+			<tr>
+			  <th>Valuta</th>
+			  <th>Vrednost</th>
+			  <th>Količina</th>
+			  <th>&nbsp;</th>
+			  <th>&nbsp;</th>
+			</tr>
+			%for valuta, vrednost in valute:
+			<tr>
+			  <td>{{valuta}}</td>
+			  <td>{{vrednost}}</td>
+			  <td>
+				<input type="text" id="znesek{{valuta}}" size="5" />
+			  </td>
+			   <td>
+				<form action="/" method="GET"> <!---->
+				   <input type="submit" value="Kupi" name="kupi" class="gumbi">
+			    </form>
+			</td>
+			</tr>
+			%end
+		  </table>
+		  
 		</div>
 		<div class="modal-footer">
-		  <!--BUY cancel buttons-->
+		  <p>Testna aplikacija</p>
 		</div>
 	  </div>
 	  
