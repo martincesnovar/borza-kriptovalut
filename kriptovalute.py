@@ -16,10 +16,15 @@ def oOsebi(id_st):
         valute = dobi_zneske.vrednost_valut()
         return template('oseba.html', id=id, ime = ime, priimek=priimek, mail=mail,valute=valute)
 
-@get('/administrator')
-def administrator():
+@get('/administrator/osebe')
+def administrator_osebe():
     rezultat = modeli.podatki_vsi()
     return template('administrator.html', rezultat=rezultat)
+
+@get('/administrator/valute')
+def administrator_valute():
+    rezultat = modeli.seznam_valut()
+    return template('seznam_valut.html', rezultat=rezultat)
 
 @get('/isci')
 def isci():

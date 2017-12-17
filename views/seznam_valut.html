@@ -1,0 +1,19 @@
+%rebase ('osnova.html', naslov='Valute', navigator='/ Valute')
+    <div class="naslov_strani">
+       Izpis valut
+    </div>
+	
+	<div class="vrstica">
+      <table>
+        <tr>
+          <th>Kratica</th>
+          <th>Ime</th>
+        </tr>
+        %for kratica, ime, spletna in rezultat:
+        <tr>
+          <td><a href ="{{spletna}}">{{kratica}}</a></td>
+          <td>{{ime}}</td>
+        </tr>
+        %end
+      </table>
+    </div>

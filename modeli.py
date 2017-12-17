@@ -1,5 +1,6 @@
 import sqlite3
 import datetime
+import dobi_zneske
 con = sqlite3.connect('Kriptovalute.db')
 cur = con.cursor()
 
@@ -74,6 +75,14 @@ def dolzniki():
     for id, ime, priimek, mail, stanje in con.execute(sql):
         sezOseb.append([id, ime, priimek, mail, stanje])
     return sezOseb
+
+def seznam_valut():
+    sql = '''SELECT * FROM Valuta'''
+    sez = []
+    for k, ime, _ime in con.execute(sql):
+        spletna = dobi_zneske.generiraj_spletno(_ime)
+        sez.append((k, ime, spletna))
+    return sez
         
 
 ###########################################################################
@@ -89,13 +98,6 @@ def dodaj_osebo(ime, priimek, mail, geslo):
     con.execute(sql, [ime, priimek, mail, geslo])
     con.commit()
 
-def dodaj_valuto(ime):
-    '''Doda valuto'''
-    sql = '''INSERT INTO Valuta (ime)
-    VALUES (?)'''
-    con.execute(sql,[ime])
-    con.commit()
-
 def kupi_valuto(lastnik, valuta, vrednost, datum = datetime.datetime.now()):
     ''' funkcija doda kriptovaluto lastniku
     - kriptovaluta je že v tabeli'''
@@ -104,6 +106,20 @@ def kupi_valuto(lastnik, valuta, vrednost, datum = datetime.datetime.now()):
     con.execute(sql,[lastnik, valuta, vrednost, datum])
     con.commit()
     _dodaj_stanje(lastnik, -vrednost)
+
+def dodaj_valute():
+    ''' funkcija doda kriptovaluto v bazo'''
+    sql = '''INSERT INTO Valuta (kratica, ime, _ime)
+              VALUES (?,?,?)'''
+    napaka = None
+    try:
+        for kratica, ime, _ime in dobi_zneske.imena_valut('https://bittrex.com/api/v1.1/public/getcurrencies'):
+            con.execute(sql,[kratica, ime, _ime])
+    except Exception as e:
+        napaka = e
+    finally:
+        con.commit()
+    return napaka
 
 
 ###########################################################################

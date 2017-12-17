@@ -25,7 +25,7 @@ def imena_valut(naslov='https://bittrex.com/api/v1.1/public/getcurrencies'):
         if sez[i]['IsActive']:
             ime = sez[i]['CurrencyLong']
             ime_k = sez[i]['Currency']
-            seznam_valut.append((ime_k,ime))
+            seznam_valut.append((ime_k,ime,ime.lower()))
     return seznam_valut
 
 def vrednost_valut():
@@ -33,3 +33,7 @@ def vrednost_valut():
     trenutna_vrednost = vrednost_valute['last']
     valute = [('BitCoin', trenutna_vrednost)]
     return valute
+
+def generiraj_spletno(ime):
+    spletna = 'https://api.coinmarketcap.com/v1/ticker/'
+    return spletna + ime.lower()
