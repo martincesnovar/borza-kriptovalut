@@ -5,7 +5,28 @@
 	  Ime: {{ime}}<br/>
 	  Priimek: {{priimek}}<br/>
       Valute:
-	  <button id="myBtn">Kupi kriptovalute</button>
+	  
+	 </div>
+	 <table>
+			<tr>
+			  <th>Valuta</th>
+			  <th>Vrednost</th>
+			  <th>Količina</th>
+			  <th>Datum</th>
+			</tr>
+			%for valut, vred, kol, dat in lastnistvo:
+			<tr>
+				<td>{{valut}}</td>
+				<td>{{vred}}</td>
+				<td>{{kol}}</td>
+				<td>{{dat}}</td>
+			%end
+			</tr>
+	 </table>
+	  
+	
+	<div>
+	<button id="myBtn">Kupi kriptovalute</button>
 	</div>
 
 	<!-- The Modal -->
@@ -20,8 +41,8 @@
 		</div>
 		<div class="modal-body">
 		  <p>Kriptovalute</p>
-		  <form action="/kupi" method="POST">
-		  <input type="hidden" id="id" name="id" value = "{{id}}"/>
+		  
+		  
 		  <table>
 			<tr>
 			  <th>Valuta</th>
@@ -31,24 +52,26 @@
 			  <th>&nbsp;</th>
 			  <th>&nbsp;</th>
 			</tr>
-			%i=0
 			%for kratica, ime, spletna, vrednost, evri, cas in valute:
-			%i+=1
+			<form action="/kupi" method="POST">
+			<input type="hidden" id="id" name="id" value = "{{id}}"/>
 			<tr>
-			  <td><input type="hidden" id="i" name="ime" value = "{{ime}}"/>{{ime}}</td>
-			  <td><input type="hidden" id="i" name="vrednost" value = "{{vrednost}}"/>{{vrednost}}</td>
-			  <td><input type="hidden" id="i" name="evri" value = "{{evri}}"/>{{evri}}</td>
+			  <td><input type="hidden" id="ime" name="ime" value = "{{ime}}"/>{{ime}}</td>
+			  <td><input type="hidden" id="vrednost" name="vrednost" value = "{{vrednost}}"/>{{vrednost}}</td>
+			  <td><input type="hidden" id="evri" name="evri" value = "{{evri}}"/>{{evri}}</td>
 			  <td>
-				<input type="text" id="i" name="kolicina" value = "{{kolicina}}" size="5" />
+				<input type="text" id="kolicina" name="kolicina" value = "{{kolicina}}" size="5" />
 			  </td>
 			   <td>
 				
-				   <input type="submit" id="i" value="Kupi" name="kupi" class="gumbi"> 
+				   <input type="submit" id="kupi" value="Kupi" name="kupi" class="gumbi"> 
+				 
 			</td>
 			</tr>
+			</form>
 			%end
 		  </table>
-		  </form>
+		  
 		  
 		</div>
 		<div class="modal-footer">

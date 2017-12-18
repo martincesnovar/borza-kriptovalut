@@ -14,7 +14,8 @@ def oOsebi(id_st):
     if modeli.podatki(id_st) is not None:
         id, ime, priimek, mail, geslo = modeli.podatki(id_st)
         valute = modeli.seznam_valut()
-        return template('oseba.html', id=id, ime = ime, priimek=priimek, mail=mail,valute=valute,kolicina=None)
+        lastnistvo = modeli.kupljene_valute(id_st)
+        return template('oseba.html', id=id, ime = ime, priimek=priimek, mail=mail,valute=valute,kolicina=None,lastnistvo=lastnistvo)
 
 @post('/kupi')
 def nakup():
@@ -28,10 +29,8 @@ def nakup():
 
 @post('/prodaj')
 def prodaj():
-    
     redirect('/oseba/<id_st>')
     return
-
 
 @get('/administrator/osebe')
 def administrator_osebe():

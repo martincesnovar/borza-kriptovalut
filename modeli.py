@@ -86,6 +86,16 @@ def seznam_valut():
         if (vrednost, cas) != (0, 0):
             sez.append((k, ime, spletna, vrednost, evri, dobi_zneske.datum(cas)))
     return sez
+
+def kupljene_valute(id):
+    sql = '''SELECT valuta, vrednost, SUM(kolicina) as kolicina, max(Datum) as datum FROM lastnistvo_valut
+    WHERE (SELECT id FROM Oseba
+    WHERE lastnistvo_valut.lastnik = (?))
+    GROUP BY valuta'''
+    sez = []
+    for valuta, vrednost, kolicina, datum in con.execute(sql,[id]):
+        sez.append((valuta, vrednost, kolicina, datum))
+    return sez
         
 
 ###########################################################################
