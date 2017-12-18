@@ -20,29 +20,35 @@
 		</div>
 		<div class="modal-body">
 		  <p>Kriptovalute</p>
+		  <form action="/kupi" method="POST">
+		  <input type="hidden" id="id" name="id" value = "{{id}}"/>
 		  <table>
 			<tr>
 			  <th>Valuta</th>
-			  <th>Vrednost</th>
+			  <th>Vrednost $</th>
+			  <th>Vrednost €</th>
 			  <th>Količina</th>
 			  <th>&nbsp;</th>
 			  <th>&nbsp;</th>
 			</tr>
-			%for valuta, vrednostin valute:
+			%i=0
+			%for kratica, ime, spletna, vrednost, evri, cas in valute:
+			%i+=1
 			<tr>
-			  <td>{{valuta}}</td>
-			  <td>{{vrednost}}</td>
+			  <td><input type="hidden" id="i" name="ime" value = "{{ime}}"/>{{ime}}</td>
+			  <td><input type="hidden" id="i" name="vrednost" value = "{{vrednost}}"/>{{vrednost}}</td>
+			  <td><input type="hidden" id="i" name="evri" value = "{{evri}}"/>{{evri}}</td>
 			  <td>
-				<input type="text" id="znesek{{valuta}}" size="5" />
+				<input type="text" id="i" name="kolicina" value = "{{kolicina}}" size="5" />
 			  </td>
 			   <td>
-				<form action="/" method="GET"> <!---->
-				   <input type="submit" value="Kupi" name="kupi" class="gumbi">
-			    </form>
+				
+				   <input type="submit" id="i" value="Kupi" name="kupi" class="gumbi"> 
 			</td>
 			</tr>
 			%end
 		  </table>
+		  </form>
 		  
 		</div>
 		<div class="modal-footer">

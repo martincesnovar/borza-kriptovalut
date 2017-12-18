@@ -1,6 +1,7 @@
 %rebase ('osnova.html', naslov='Valute', navigator='/ Valute')
     <div class="naslov_strani">
        Izpis valut
+	   <a href="/dodaj_valute">Dodaj v seznam</a>
     </div>
 	
 	<div class="vrstica">
@@ -8,11 +9,17 @@
         <tr>
           <th>Kratica</th>
           <th>Ime</th>
+		  <th>Vrednost $</th>
+		  <th>Vrednost €</th>
+		  <th>Čas</th>
         </tr>
-        %for kratica, ime, spletna in rezultat:
+        %for kratica, ime, spletna, vrednost, evri, cas in rezultat:
         <tr>
           <td><a href ="{{spletna}}">{{kratica}}</a></td>
           <td>{{ime}}</td>
+		  <td>{{vrednost}}</td>
+		  <td>{{evri}}</td>
+		  <td>{{cas}}</td>
         </tr>
         %end
       </table>

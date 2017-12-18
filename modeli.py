@@ -79,9 +79,12 @@ def dolzniki():
 def seznam_valut():
     sql = '''SELECT * FROM Valuta'''
     sez = []
-    for k, ime, _ime in con.execute(sql):
-        spletna = dobi_zneske.generiraj_spletno(_ime)
-        sez.append((k, ime, spletna))
+    podatki = dobi_zneske.vrni_podatke()
+    for k, ime in con.execute(sql):
+        spletna = dobi_zneske.generiraj_spletno(ime.lower())
+        vrednost, evri, cas = podatki.get(ime.lower(),(0,0,0))
+        if (vrednost, cas) != (0, 0):
+            sez.append((k, ime, spletna, vrednost, evri, dobi_zneske.datum(cas)))
     return sez
         
 
@@ -98,23 +101,20 @@ def dodaj_osebo(ime, priimek, mail, geslo):
     con.execute(sql, [ime, priimek, mail, geslo])
     con.commit()
 
-def kupi_valuto(lastnik, valuta, vrednost, datum = datetime.datetime.now()):
-    ''' funkcija doda kriptovaluto lastniku
-    - kriptovaluta je že v tabeli'''
-    sql = '''INSERT INTO lastnistvo_valut (lastnik, valuta, vrednost, Datum)
-              VALUES (?,?,?,?)'''
-    con.execute(sql,[lastnik, valuta, vrednost, datum])
+def kupi_valuto(lastnik, valuta, vrednost, kolicina, datum = datetime.datetime.now()):
+    sql = '''INSERT INTO lastnistvo_valut (lastnik, valuta, vrednost, kolicina, Datum)
+              VALUES (?,?,?,?,?)'''
+    con.execute(sql,[lastnik, valuta, vrednost, kolicina, datum])
     con.commit()
-    _dodaj_stanje(lastnik, -vrednost)
 
 def dodaj_valute():
     ''' funkcija doda kriptovaluto v bazo'''
-    sql = '''INSERT INTO Valuta (kratica, ime, _ime)
-              VALUES (?,?,?)'''
+    sql = '''INSERT INTO Valuta (kratica, ime)
+              VALUES (?,?)'''
     napaka = None
     try:
-        for kratica, ime, _ime in dobi_zneske.imena_valut('https://bittrex.com/api/v1.1/public/getcurrencies'):
-            con.execute(sql,[kratica, ime, _ime])
+        for kratica, ime, in dobi_zneske.imena_valut('https://bittrex.com/api/v1.1/public/getcurrencies'):
+            con.execute(sql,[kratica, ime])
     except Exception as e:
         napaka = e
     finally:
@@ -128,13 +128,11 @@ def dodaj_valute():
 #                                                                         #
 ###########################################################################
 
-def prodaj_valuto(lastnik, vrednost, datum = datetime.datetime.now()):
-    ''' funkcija proda kriptovaluto lastniku'''
-    sql = '''DELETE FROM lastnistvo_valut
-            '''
-    con.execute(sql)
+def prodaj_valuto(lastnik, valuta, vrednost):
+    sql = '''DELETE FROM lastnistvo_valut 
+            WHERE lastnik = Oseba.id AND valuta = Valuta.id'''
+    con.execute(sql,[lastnik, valuta])
     con.commit()
-    _dodaj_stanje(lastnik, vrednost)
 
 def zbrisi_osebo(id_osebe):
     ''' funkcija odstrani osebo'''
@@ -159,26 +157,6 @@ def zapri_racun(id_osebe):
 #                                                                         #
 ###########################################################################
 
-def _spremeni_stanje(id_osebe, stanje):
-    '''spremeni stanje osebe'''
-    sql = '''UPDATE oseba
-    SET stanje = ?
-    WHERE id = ?'''
-    con.execute(sql,[stanje, id_osebe])
-    con.commit()
-
-def _dodaj_stanje(id_osebe, vrednost):
-    '''popravi stanje na računu'''
-    sql = '''SELECT * FROM oseba
-    WHERE id = ?'''
-    sql_u = '''UPDATE oseba
-    SET stanje = ?
-    WHERE id = ?'''
-    for id_osebe, _, _, _, stanje in con.execute(sql,[id_osebe]):
-        stanje += vrednost
-    con.execute(sql_u,[stanje, id_osebe])
-    con.commit()
-        
     
 
 ###########################################################################

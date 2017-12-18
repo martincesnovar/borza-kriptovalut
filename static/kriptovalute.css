@@ -3,7 +3,7 @@
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
+    padding-top: 15px; /* Location of the box */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
@@ -60,7 +60,11 @@
     color: white;
 }
 
-.modal-body {padding: 2px 16px;}
+.modal-body {
+	padding: 2px 16px;
+	max-height: calc(100vh - 200px);
+    overflow-y: auto;
+	}
 
 .modal-footer {
     padding: 2px 16px;

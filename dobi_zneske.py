@@ -11,12 +11,29 @@ def dobi_podatke(stran):
     podatki['datetime'] = cas
     return podatki
 
+def dobi_podatke_coin_market():
+    '''Please limit requests to no more than 10 per minute.
+    Endpoints update every 5 minutes.'''
+    stran = 'https://api.coinmarketcap.com/v1/ticker/?convert=EUR'
+
+    sez = []
+    with urllib.request.urlopen(stran) as url:
+        podatki = json.loads(url.read().decode())
+    return podatki
+
+def vrni_podatke():
+    slo = {}
+    for el in dobi_podatke_coin_market():
+        slo[el.get('id','')] = (float(el.get('price_usd',0.0)),float(el.get('price_eur',0.0)),el.get('last_updated',0))
+    return slo
+
           
 def datum(podatki):
     '''pretvori in vrne čas v obliki (leto, mesec, dan, ura, min, sek,_ ,_)'''
     if podatki is not None:
         return time.gmtime(int(podatki))[:]
     return time.gmtime()[:]
+        
 
 def imena_valut(naslov='https://bittrex.com/api/v1.1/public/getcurrencies'):
     sez = dobi_podatke(naslov)['result']

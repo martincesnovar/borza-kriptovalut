@@ -13,8 +13,25 @@ def static(filename):
 def oOsebi(id_st):
     if modeli.podatki(id_st) is not None:
         id, ime, priimek, mail, geslo = modeli.podatki(id_st)
-        valute = dobi_zneske.vrednost_valut()
-        return template('oseba.html', id=id, ime = ime, priimek=priimek, mail=mail,valute=valute)
+        valute = modeli.seznam_valut()
+        return template('oseba.html', id=id, ime = ime, priimek=priimek, mail=mail,valute=valute,kolicina=None)
+
+@post('/kupi')
+def nakup():
+    id = request.forms.id
+    ime = request.forms.ime
+    vrednost = request.forms.vrednost
+    kolicina = request.forms.kolicina
+    modeli.kupi_valuto(id, ime, vrednost, kolicina)
+    redirect('/oseba/'+str(id))
+    return template('oseba.html', id=id, ime = ime, kolicina=kolicina,vrednost=vrednost)
+
+@post('/prodaj')
+def prodaj():
+    
+    redirect('/oseba/<id_st>')
+    return
+
 
 @get('/administrator/osebe')
 def administrator_osebe():
@@ -63,7 +80,7 @@ def glavni_p():
     if podatki is not None:
         _, _, _, email, psw = podatki
         if email == mail and geslo == psw:
-            redirect('/oseba/<id_s>')
+            redirect('/oseba/'+str(id_s))
             return template('prijava.html', mail = mail, napaka=None, geslo = geslo)
         else:
             return template('prijava.html', mail=None, geslo=None, napaka='Neveljavna prijava')
@@ -91,7 +108,11 @@ def odstrani():
         return template('zapri_racun.html', mail=mail, geslo=geslo, napaka='Nepravilno mail/geslo')
     return template('zapri_racun.html', mail=None, geslo=None, napaka=None)
 
-                     
+@post('/dodaj_valute')
+def dodaj_valute():
+    modeli.dodaj_valute()
+    rezultat = modeli.seznam_valut()
+    return template('seznam_valut.html', rezultat=rezultat)
 
 # poženemo strežnik na portu 8080, glej http://localhost:8080/
 run(host='localhost', port=8080,debug=True, reloader=True) #problem reloader idle
