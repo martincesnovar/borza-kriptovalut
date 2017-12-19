@@ -88,7 +88,7 @@ def seznam_valut():
     return sez
 
 def kupljene_valute(id):
-    sql = '''SELECT valuta, vrednost, SUM(kolicina) as kolicina, max(Datum) as datum FROM lastnistvo_valut
+    sql = '''SELECT valuta, SUM(vrednost)/COUNT(vrednost), SUM(kolicina) as kolicina, max(Datum) as datum FROM lastnistvo_valut
     WHERE (SELECT id FROM Oseba
     WHERE lastnistvo_valut.lastnik = (?))
     GROUP BY valuta'''
