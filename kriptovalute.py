@@ -20,17 +20,22 @@ def oOsebi(id_st):
 @post('/kupi')
 def nakup():
     id = request.forms.id
-    ime = request.forms.ime
+    ime = request.forms.k
     vrednost = request.forms.vrednost
     kolicina = request.forms.kolicina
     modeli.kupi_valuto(id, ime, vrednost, kolicina)
     redirect('/oseba/'+str(id))
-    return template('oseba.html', id=id, ime = ime, kolicina=kolicina,vrednost=vrednost)
+    return template('oseba.html', id=id, ime = ime, kolicina=kolicina,vrednost=vrednost,k=k)
 
 @post('/prodaj')
 def prodaj():
-    redirect('/oseba/<id_st>')
-    return
+    id = request.forms.id
+    ime = request.forms.valut
+    vred = request.forms.vred
+    kol= request.forms.kol
+    modeli.prodaj_valuto(id, ime, kol)
+    redirect('/oseba/'+str(id))
+    return template('oseba.html', id=id, ime = ime, kol=kol,vred=vred)
 
 @get('/administrator/osebe')
 def administrator_osebe():
@@ -112,6 +117,10 @@ def dodaj_valute():
     modeli.dodaj_valute()
     rezultat = modeli.seznam_valut()
     return template('seznam_valut.html', rezultat=rezultat)
+
+@get('/odjavi')
+def odjava():
+    redirect('/')
 
 # poženemo strežnik na portu 8080, glej http://localhost:8080/
 run(host='localhost', port=8080,debug=True, reloader=True) #problem reloader idle

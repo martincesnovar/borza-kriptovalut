@@ -87,16 +87,24 @@ def seznam_valut():
             sez.append((k, ime, spletna, vrednost, evri, dobi_zneske.datum(cas)))
     return sez
 
+def ime_valute(id):
+    sql = '''SELECT ime FROM Valuta
+    WHERE id = (?)'''
+    for ime in con.execute(sql,[id]):
+        return ime[0]
+
 def kupljene_valute(id):
-    sql = '''SELECT valuta, SUM(vrednost)/COUNT(vrednost), SUM(kolicina) as kolicina, max(Datum) as datum FROM lastnistvo_valut
+    sql = '''SELECT valuta, vrednost,
+    SUM(kolicina) as kolicina, SUM(cena), max(Datum) as datum FROM lastnistvo_valut
     WHERE (SELECT id FROM Oseba
     WHERE lastnistvo_valut.lastnik = (?))
     GROUP BY valuta'''
     sez = []
-    for valuta, vrednost, kolicina, datum in con.execute(sql,[id]):
-        sez.append((valuta, vrednost, kolicina, datum))
+    for valuta, vrednost, kolicina, cena, datum in con.execute(sql,[id]):
+        sez.append((valuta, ime_valute(valuta), vrednost, kolicina, round(cena,2), datum))
     return sez
-        
+
+
 
 ###########################################################################
 #                                                                         #
@@ -112,9 +120,9 @@ def dodaj_osebo(ime, priimek, mail, geslo):
     con.commit()
 
 def kupi_valuto(lastnik, valuta, vrednost, kolicina, datum = datetime.datetime.now()):
-    sql = '''INSERT INTO lastnistvo_valut (lastnik, valuta, vrednost, kolicina, Datum)
-              VALUES (?,?,?,?,?)'''
-    con.execute(sql,[lastnik, valuta, vrednost, kolicina, datum])
+    sql = '''INSERT INTO lastnistvo_valut (lastnik, valuta, vrednost, kolicina, cena, Datum)
+              VALUES (?,?,?,?,?,?)'''
+    con.execute(sql,[lastnik, valuta, vrednost, kolicina, str(float(vrednost)*float(kolicina)), datum])
     con.commit()
 
 def dodaj_valute():
@@ -138,27 +146,40 @@ def dodaj_valute():
 #                                                                         #
 ###########################################################################
 
-def prodaj_valuto(lastnik, valuta, vrednost):
-    sql = '''DELETE FROM lastnistvo_valut 
-            WHERE lastnik = Oseba.id AND valuta = Valuta.id'''
-    con.execute(sql,[lastnik, valuta])
-    con.commit()
+def prodaj_valuto(lastnik, valuta, kolicina):
+    sql_1 = '''SELECT kolicina FROM lastnistvo_valut
+    WHERE (SELECT id FROM oseba WHERE (SELECT id FROM Valuta
+          WHERE (?) = lastnistvo_valut.lastnik AND (?) = lastnistvo_valut.valuta))'''
+    for kol in con.execute(sql_1,[lastnik, valuta]):
+        prodaj = kol[0]-float(kolicina)
+        if prodaj<=0:
+            sql = '''DELETE FROM lastnistvo_valut 
+                  WHERE (SELECT id FROM oseba WHERE (SELECT id FROM Valuta
+                  WHERE (?) = lastnistvo_valut.lastnik AND (?) = lastnistvo_valut.valuta))'''
+            con.execute(sql,[lastnik, valuta])
+        else:
+            sql = '''UPDATE lastnistvo_valut
+              SET kolicina = (?)
+              WHERE (SELECT id FROM oseba WHERE (SELECT id FROM Valuta
+              WHERE (?) = lastnistvo_valut.lastnik AND (?) = lastnistvo_valut.valuta))'''
+            con.execute(sql,[prodaj, lastnik, valuta])
+        con.commit()
 
-def zbrisi_osebo(id_osebe):
+
+def _zbrisi_osebo(id_osebe):
     ''' funkcija odstrani osebo'''
     sql = '''DELETE FROM oseba
-    WHERE oseba.id = (?)
-            '''
+    WHERE oseba.id = (?)'''
     con.execute(sql,[id_osebe])
     con.commit()
 
 def zapri_racun(id_osebe):
     '''proda vse kriptovalute in zbriše osebo'''
     sql = '''SELECT * FROM lastnistvo_valut
-    WHERE lastnik = ?'''
+    WHERE lastnik = (?)'''
     for id_osebe, id_valute, vrednost, _ in con.execute(sql,[id_osebe]):
         prodaj_valuto(id_osebe, id_valute, vrednost)
-    zbrisi_osebo(id_osebe)
+    _zbrisi_osebo(id_osebe)
 
 
 ###########################################################################

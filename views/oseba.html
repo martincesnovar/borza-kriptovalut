@@ -1,33 +1,61 @@
 %rebase ('osnova.html', naslov='Oseba', navigator='/ Oseba')
-	
-    <div class="vrstica">
-      ID: {{id}} <br/>
-	  Ime: {{ime}}<br/>
-	  Priimek: {{priimek}}<br/>
-      Valute:
-	  
-	 </div>
-	 <table>
+		 
+<div class="navbar">
+  <div class="dropdown">
+    <button class="dropbtn">Račun 
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content">
+      <center>{{ime}} &nbsp {{priimek}}</center>
+      <a href="/odjavi">Odjava</a>
+	  <a href="/zapri_racun">Zapri račun</a>
+    </div>
+  </div> 
+  <div class="dropdown">
+    <button class="dropbtn">API 
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content">
+      <a href="https://api.coinmarketcap.com/v1/ticker/">CoinMarket</a>
+	  <a href="https://www.bitstamp.net/api/ticker_hour/">Bitstamp</a>
+	  <a href="https://bittrex.com/api/v1.1/public/getcurrencies">Bitrex</a>
+    </div>
+  </div> 
+	<button id="myBtn">Kupi kriptovalute</button>
+</div>
+	 
+	Valute:
+	</div>
+	 <table class="tabela">
 			<tr>
 			  <th>Valuta</th>
 			  <th>Vrednost</th>
+			  <th>Cena</th>
 			  <th>Količina</th>
 			  <th>Datum</th>
+			  <th>Prodam</th>
+			  <th>&nbsp;</th>
 			</tr>
-			%for valut, vred, kol, dat in lastnistvo:
+			%for k, valut, vred, kol, cena, dat in lastnistvo:
+			<form action="/prodaj" method="POST">
+			<input type="hidden" id="id" name="id" value = "{{id}}"/>
 			<tr>
-				<td>{{valut}}</td>
-				<td>{{vred}}</td>
-				<td>{{kol}}</td>
-				<td>{{dat}}</td>
+				<td><input type="hidden" id="valut" name="valut" value = "{{k}}"/>{{valut}}</td>
+				<td><input type="hidden" id="vred" name="vred" value = "{{vred}}"/>{{vred}}</td>
+				<td><input type="hidden" id="cena" name="cena" value = "{{cena}}"/>{{cena}}</td>
+				<td><input type="hidden" id="kol" name="kol" value = "{{kol}}"/>{{kol}}</td>
+				<td><input type="hidden" id="dat" name="dat" value = "{{dat}}"/>{{dat}}</td>
+				<td>
+				<input type="text" id="kolicina" name="kolicina" value = "{{kolicina}}" placeholder="koliko" size="5" />
+			    </td>
+			   <td>
+				 <input type="submit" id="prodaj" value="prodaj" name="prodaj" class="gumbi"> 
+			    </td>
+			</form>
 			%end
 			</tr>
 	 </table>
 	  
-	
-	<div>
-	<button id="myBtn">Kupi kriptovalute</button>
-	</div>
 
 	<!-- The Modal -->
 	<div id="myModal" class="modal">
@@ -52,9 +80,10 @@
 			  <th>&nbsp;</th>
 			  <th>&nbsp;</th>
 			</tr>
-			%for kratica, ime, spletna, vrednost, evri, cas in valute:
+			%for k, ime, spletna, vrednost, evri, cas in valute:
 			<form action="/kupi" method="POST">
 			<input type="hidden" id="id" name="id" value = "{{id}}"/>
+			<input type="hidden" id="k" name="k" value = "{{k}}"/>
 			<tr>
 			  <td><input type="hidden" id="ime" name="ime" value = "{{ime}}"/>{{ime}}</td>
 			  <td><input type="hidden" id="vrednost" name="vrednost" value = "{{vrednost}}"/>{{vrednost}}</td>
@@ -83,8 +112,3 @@
 	  <script src="/static/kriptovalute.js"></script> 
     </div>
 	
-	<div class = 'vrstica'>
-	<form method="post" action="/zapri_racun">
-		<input id="QUIT" type="submit" value="Zapri račun" name="Zapri" class="gumbi"/>
-	</form>
-	</div>
