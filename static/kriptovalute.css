@@ -64,8 +64,6 @@
 	padding: 2px 16px;
 	max-height: calc(100vh - 200px);
     overflow-y: auto;
-	background-color: #0f0f1e;
-	color:white;
 	}
 
 .modal-footer {

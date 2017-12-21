@@ -30,19 +30,17 @@
 			<tr>
 			  <th>Valuta</th>
 			  <th>Vrednost</th>
-			  <th>Cena</th>
 			  <th>Količina</th>
 			  <th>Datum</th>
 			  <th>Prodam</th>
 			  <th>&nbsp;</th>
 			</tr>
-			%for k, valut, vred, kol, cena, dat in lastnistvo:
+			%for k, valut, vred, kol, dat in lastnistvo:
 			<form action="/prodaj" method="POST">
 			<input type="hidden" id="id" name="id" value = "{{id}}"/>
 			<tr>
 				<td><input type="hidden" id="valut" name="valut" value = "{{k}}"/>{{valut}}</td>
 				<td><input type="hidden" id="vred" name="vred" value = "{{vred}}"/>{{vred}}</td>
-				<td><input type="hidden" id="cena" name="cena" value = "{{cena}}"/>{{cena}}</td>
 				<td><input type="hidden" id="kol" name="kol" value = "{{kol}}"/>{{kol}}</td>
 				<td><input type="hidden" id="dat" name="dat" value = "{{dat}}"/>{{dat}}</td>
 				<td>

@@ -32,10 +32,11 @@ def prodaj():
     id = request.forms.id
     ime = request.forms.valut
     vred = request.forms.vred
-    kol= request.forms.kol
-    modeli.prodaj_valuto(id, ime, kol)
+    kol = request.forms.kol
+    kolicina= request.forms.kolicina
+    modeli.prodaj_valuto(id, ime, kolicina,vred)
     redirect('/oseba/'+str(id))
-    return template('oseba.html', id=id, ime = ime, kol=kol,vred=vred)
+    return template('oseba.html', id=id, ime = ime, kol=kol,vred=vred,kolicina=kolicina)
 
 @get('/administrator/osebe')
 def administrator_osebe():
