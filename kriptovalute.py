@@ -121,10 +121,19 @@ def odstrani():
         return template('zapri_racun.html', mail=mail, geslo=geslo, napaka='Nepravilno mail/geslo')
     return template('zapri_racun.html', mail=None, geslo=None, napaka=None)
 
+
+@get('/dodaj_valute')
+def dodaj_valute():
+    modeli.dodaj_valute()
+    rezultat = modeli.seznam_valut()
+    redirect('/administrator/valute')
+    return template('seznam_valut.html', rezultat=rezultat)
+
 @post('/dodaj_valute')
 def dodaj_valute():
     modeli.dodaj_valute()
     rezultat = modeli.seznam_valut()
+    redirect('/administrator/valute')
     return template('seznam_valut.html', rezultat=rezultat)
 
 @get('/odjavi')
