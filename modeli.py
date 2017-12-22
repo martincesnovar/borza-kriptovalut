@@ -118,7 +118,7 @@ def vrni_zgodovino(id):
     '''[id, valuta, kolicina, cena, datum]'''
     sez = []
     sql='''SELECT * FROM Zgodovina WHERE
-    (SELECT id FROM Oseba WHERE Oseba.id = (?))'''
+Zgodovina.Oseba = (?)'''
     for el in con.execute(sql, [id]):
         sez.append(el)
     return sez
