@@ -136,6 +136,13 @@ def dodaj_valute():
     redirect('/administrator/valute')
     return template('seznam_valut.html', rezultat=rezultat)
 
+@get('/oseba/<id>/zgodovina')
+def zgodovina(id):
+    zgodovina_transakcij = modeli.vrni_zgodovino(id)
+    zasluzek = modeli.zasluzek(id)
+    return template('zgodovina.html',zasluzek=zasluzek,lastnistvo=zgodovina_transakcij)
+    
+
 @get('/odjavi')
 def odjava():
     redirect('/')

@@ -1,0 +1,30 @@
+%rebase ('osnova.html', naslov='Oseba', navigator='/ Oseba')
+		 
+<div>
+Zaslužek od prodaje: {{zasluzek}}<br/>
+Valute:
+	</div>
+	<div>
+	 <table class="tabela">
+			<tr>
+			  <th>Valuta</th>
+			  <th>Kolicina</th>
+			  <th>Cena</th>
+			  <th>Datum</th>
+
+			</tr>
+			
+			%for id, valuta, kolicina, cena, datum in lastnistvo:
+			<input type="hidden" id="id" name="id" value = "{{id}}"/>
+			<tr>
+				<td>{{valuta}}</td>
+				<td>{{kolicina}}</td>
+				<td>{{cena}}</td>
+				<td>{{datum}}</td>
+			   <td>
+			%end
+			</tr>
+	 </table>
+	  
+    </div>
+	
