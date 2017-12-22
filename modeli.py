@@ -105,6 +105,14 @@ def kupljene_valute(id):
     return sez
 
 
+def zasluzek(id):
+    sql='''SELECT -SUM(kolicina* cena)
+    FROM Zgodovina WHERE (?) = Oseba
+    GROUP BY Oseba, Valuta'''
+    sez = []
+    for vrednost, in con.execute(sql,[id]):
+        sez.append(vrednost)
+    return round(sum(sez),2)
 
 ###########################################################################
 #                                                                         #
@@ -128,8 +136,8 @@ def dodaj_v_zgodovino(lastnik, valuta, kolicina, cena, datum = datetime.datetime
 def kupi_valuto(lastnik, valuta, vrednost, kolicina, datum = datetime.datetime.now()):
     sql = '''INSERT INTO lastnistvo_valut (lastnik, valuta, vrednost, kolicina)
               VALUES (?,?,?,?)'''
-    dodaj_v_zgodovino(lastnik, valuta, kolicina, vrednost,datum)
-    con.execute(sql,[lastnik, valuta, vrednost, kolicina])
+    dodaj_v_zgodovino(int(lastnik), valuta, float(kolicina), float(vrednost),datum)
+    con.execute(sql,[int(lastnik), valuta, float(vrednost), float(kolicina)])
     con.commit()
 
 
@@ -154,32 +162,31 @@ def dodaj_valute():
 #                                                                         #
 ###########################################################################
 
-def prodaj_valuto(lastnik, valuta, kolicina,cena):
+def prodaj_valuto(lastnik, valuta, kolicina,cena,vse=False):
     sql_1 = '''SELECT kolicina FROM lastnistvo_valut
     WHERE (SELECT id FROM oseba WHERE (SELECT id FROM Valuta
           WHERE (?) = lastnistvo_valut.lastnik AND (?) = lastnistvo_valut.valuta))'''
     for kol in con.execute(sql_1,[lastnik, valuta]):
-        prodaj = kol[0]-float(kolicina)
-        if prodaj<=0:
+        dodaj_v_zgodovino(lastnik,valuta,-int(kolicina),cena)
+        prodaj = max(kol[0]-int(kolicina),0)
+        if vse or prodaj==0:
             sql = '''DELETE FROM lastnistvo_valut 
                   WHERE (SELECT id FROM oseba WHERE (SELECT id FROM Valuta
                   WHERE (?) = lastnistvo_valut.lastnik AND (?) = lastnistvo_valut.valuta))'''
-            con.execute(sql,[lastnik, valuta])
+            con.execute(sql,[int(lastnik), valuta])
         else:
             sql = '''UPDATE lastnistvo_valut
               SET kolicina = (?), Datum = datetime('now')
               WHERE (SELECT id FROM oseba WHERE (SELECT id FROM Valuta
               WHERE (?) = lastnistvo_valut.lastnik AND (?) = lastnistvo_valut.valuta))'''
-            con.execute(sql,[prodaj, lastnik, valuta])
-        dodaj_v_zgodovino(lastnik,valuta,-float(kolicina),cena)
+            con.execute(sql,[prodaj, int(lastnik), valuta])  
         con.commit()
 
 
-def zbrisi_zgodovino(lastnik, valuta):
+def zbrisi_zgodovino(lastnik):
     sql = '''DELETE FROM Zgodovina
-              WHERE (SELECT id FROM oseba WHERE (SELECT id FROM Valuta
-              WHERE (?) = Zgodovina.Oseba AND (?) = Zgodovina.Valuta))'''
-    con.execute(sql,[lastnik, valuta])
+              WHERE (?) = Oseba'''
+    con.execute(sql,[lastnik])
     con.commit()
 
 
@@ -194,9 +201,9 @@ def zapri_racun(id_osebe):
     '''proda vse kriptovalute in zbriše osebo'''
     sql = '''SELECT * FROM lastnistvo_valut
     WHERE lastnik = (?)'''
-    for id_osebe, id_valute, vrednost, _ in con.execute(sql,[id_osebe]):
-        prodaj_valuto(id_osebe, id_valute, vrednost)
-        zbrisi_zgodovino(id_osebe, id_valute)
+    for id_o, id_valute, vrednost, kolicina, _ in con.execute(sql,[id_osebe]):
+        zbrisi_zgodovino(int(id_osebe))
+        prodaj_valuto(int(id_osebe), id_valute, kolicina,0.0,True)
     _zbrisi_osebo(id_osebe)
 
 
@@ -214,3 +221,15 @@ def zapri_racun(id_osebe):
 #                                                                         #
 ###########################################################################
 
+def vsi_podatki(id_st):
+    sez = []
+    valute = seznam_valut()
+    lastnistvo = kupljene_valute(id_st)
+    for el in valute:
+        kratica,ime,stran,vrednost_t,evri,datum=el
+        for el in lastnistvo:
+            kra,ime1,vrednost,kolicina,datum1=el
+            if kratica == kra:
+                sez.append((kra, ime, vrednost, vrednost_t, kolicina, datum1))
+    return sez
+                

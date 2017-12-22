@@ -14,8 +14,9 @@ def oOsebi(id_st):
     if modeli.podatki(id_st) is not None:
         id, ime, priimek, mail, geslo = modeli.podatki(id_st)
         valute = modeli.seznam_valut()
-        lastnistvo = modeli.kupljene_valute(id_st)
-        return template('oseba.html', id=id, ime = ime, priimek=priimek, mail=mail,valute=valute,kolicina=None,lastnistvo=lastnistvo)
+        lastnistvo = modeli.vsi_podatki(id_st)
+        zasluzek = modeli.zasluzek(id)
+        return template('oseba.html', id=id, ime = ime, priimek=priimek, mail=mail,valute=valute,kolicina=None,lastnistvo=lastnistvo, zasluzek=zasluzek)
 
 @post('/kupi')
 def nakup():
@@ -31,9 +32,9 @@ def nakup():
 def prodaj():
     id = request.forms.id
     ime = request.forms.valut
-    vred = request.forms.vred
+    vred = request.forms.vredn
     kol = request.forms.kol
-    kolicina= request.forms.kolicina
+    kolicina= min(kol,request.forms.kolicina)
     modeli.prodaj_valuto(id, ime, kolicina,vred)
     redirect('/oseba/'+str(id))
     return template('oseba.html', id=id, ime = ime, kol=kol,vred=vred,kolicina=kolicina)
@@ -69,7 +70,7 @@ def dodaj():
         modeli.dodaj_osebo(ime, priimek, mail, geslo)
         id_1 = modeli.id_st(mail)
         redirect('/oseba/'+str(id_1))
-        return template('registriraj.html', ime = ime, priimek = priimek, mail = mail, geslo = geslo, napaka=None)
+        return template('registriraj.html', ime = ime, priimek = priimek, mail = mail, geslo = geslo, napaka=napaka)
 
 @get('/prijava')
 def glavni():
@@ -106,7 +107,7 @@ def odstrani():
     if podatki is not None:
         id_s, _, _, email, psw = podatki
         if email == mail and geslo == psw and id==id_s:
-            modeli.zbrisi_osebo(id)
+            modeli.zapri_racun(id)
             redirect('/')
             return template('zapri_racun.html', mail=mail, geslo=geslo,napaka=None)
         redirect('/zapri_racun')

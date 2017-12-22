@@ -21,26 +21,31 @@
 	  <a href="https://bittrex.com/api/v1.1/public/getcurrencies">Bitrex</a>
     </div>
   </div> 
+  
 	<button id="myBtn">Kupi kriptovalute</button>
+	
 </div>
-	 
-	Valute:
+<div>
+Zaslužek od prodaje: {{zasluzek}}<br/>
+Valute:
 	</div>
 	 <table class="tabela">
 			<tr>
 			  <th>Valuta</th>
 			  <th>Vrednost</th>
+			  <th>Vrednost_T</th>
 			  <th>Količina</th>
 			  <th>Datum</th>
 			  <th>Prodam</th>
 			  <th>&nbsp;</th>
 			</tr>
-			%for k, valut, vred, kol, dat in lastnistvo:
+			%for k, valut, vred, vredn, kol, dat in lastnistvo:
 			<form action="/prodaj" method="POST">
 			<input type="hidden" id="id" name="id" value = "{{id}}"/>
 			<tr>
 				<td><input type="hidden" id="valut" name="valut" value = "{{k}}"/>{{valut}}</td>
 				<td><input type="hidden" id="vred" name="vred" value = "{{vred}}"/>{{vred}}</td>
+				<td><input type="hidden" id="vredn" name="vredn" value = "{{vredn}}"/>{{vredn}}</td>
 				<td><input type="hidden" id="kol" name="kol" value = "{{kol}}"/>{{kol}}</td>
 				<td><input type="hidden" id="dat" name="dat" value = "{{dat}}"/>{{dat}}</td>
 				<td>
