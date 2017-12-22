@@ -167,7 +167,7 @@ def prodaj_valuto(lastnik, valuta, kolicina,cena,vse=False):
     WHERE (SELECT id FROM oseba WHERE (SELECT id FROM Valuta
           WHERE (?) = lastnistvo_valut.lastnik AND (?) = lastnistvo_valut.valuta))'''
     for kol in con.execute(sql_1,[lastnik, valuta]):
-        dodaj_v_zgodovino(lastnik,valuta,-int(kolicina),cena)
+        dodaj_v_zgodovino(lastnik,valuta,-float(kolicina),cena)
         prodaj = max(kol[0]-int(kolicina),0)
         if vse or prodaj==0:
             sql = '''DELETE FROM lastnistvo_valut 
