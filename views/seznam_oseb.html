@@ -1,0 +1,27 @@
+%rebase ('osnova.html', naslov='Seznam_oseb', navigator='/ Administrator/Osebe')
+    <div class="naslov_strani">
+       Izpis komitentov
+    </div>
+	
+	<div class="vrstica">
+      <table>
+        <tr>
+          <th>ID</th>
+          <th>Ime</th>
+          <th>Priimek</th>
+		  <th>Mail</th>
+		  <th>Geslo</th>
+		  <th>Zaslužek</th>
+        </tr>
+        %for id, ime, priimek, email, geslo in rezultat:
+        <tr>
+          <td><a href="/oseba/{{id}}">{{id}}</a></td>
+          <td>{{ime}}</td>
+          <td>{{priimek}}</td>
+          <td>{{email}}</td>
+          <td>{{geslo}}</td>
+		  <td>{{zasluzek[id]}}</td>
+        </tr>
+        %end
+      </table>
+    </div>

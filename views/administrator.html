@@ -1,25 +1,6 @@
 %rebase ('osnova.html', naslov='Administrator', navigator='/ Administrator')
     <div class="naslov_strani">
-       Izpis komitentov
+       <a href="/administrator/osebe">Pregled oseb</a> <br/>
+	   <a href="/administrator/valute">Seznam valut</a>
     </div>
 	
-	<div class="vrstica">
-      <table>
-        <tr>
-          <th>ID</th>
-          <th>Ime</th>
-          <th>Priimek</th>
-		  <th>Mail</th>
-		  <th>Geslo</th>
-        </tr>
-        %for id, ime, priimek, email, geslo in rezultat:
-        <tr>
-          <td><a href="/oseba/{{id}}">{{id}}</a></td>
-          <td>{{ime}}</td>
-          <td>{{priimek}}</td>
-          <td>{{email}}</td>
-          <td>{{geslo}}</td>
-        </tr>
-        %end
-      </table>
-    </div>

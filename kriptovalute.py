@@ -39,10 +39,17 @@ def prodaj():
     redirect('/oseba/'+str(id))
     return template('oseba.html', id=id, ime = ime, kol=kol,vred=vred,kolicina=kolicina)
 
+@get('/administrator')
+def administrator():
+    return template('administrator.html')
+
 @get('/administrator/osebe')
 def administrator_osebe():
+    sez = {}
     rezultat = modeli.podatki_vsi()
-    return template('administrator.html', rezultat=rezultat)
+    for el in rezultat:
+        sez[el[0]]=modeli.zasluzek(el[0])
+    return template('seznam_oseb.html', rezultat=rezultat,zasluzek=sez)
 
 @get('/administrator/valute')
 def administrator_valute():
