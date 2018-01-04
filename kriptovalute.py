@@ -34,7 +34,7 @@ def prodaj():
     ime = request.forms.valut
     vred = request.forms.vredn
     kol = request.forms.kol
-    kolicina= min(kol,request.forms.kolicina)
+    kolicina= request.forms.kolicina
     modeli.prodaj_valuto(id, ime, kolicina,vred)
     redirect('/oseba/'+str(id))
     return template('oseba.html', id=id, ime = ime, kol=kol,vred=vred,kolicina=kolicina)
