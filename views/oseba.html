@@ -23,15 +23,22 @@
     </div>
   </div> 
   
-	<button id="myBtn">Kupi kriptovalute</button>
+	<button id="myBtn" class="w3-button w3-hover-orange" style="font-size:16px; color:white;">Kupi kriptovalute <i class="fa fa-cart-plus"></i></button>
+
 	
 </div>
-<div>
+<div id ="stanje" class="w3-panel w3-pale-green">
 Zaslužek od prodaje: {{zasluzek}}<br/>
-Valute:
 	</div>
-	 <table class="tabela">
-			<tr>
+	<div>
+	Valute:
+	</div>
+	
+	<div class="w3-container">
+	<input class="w3-input w3-border w3-padding" type="text" placeholder="Išči kriptovaluto" id="myInput" onkeyup="myFunction()">
+	
+	 <table class="w3-table-all" id="myTable">
+			<tr class="w3-gray">
 			  <th>Valuta</th>
 			  <th>Vrednost</th>
 			  <th>Vrednost_T</th>
@@ -50,15 +57,19 @@ Valute:
 				<td><input type="hidden" id="kol" name="kol" value = "{{kol}}"/>{{kol}}</td>
 				<td><input type="hidden" id="dat" name="dat" value = "{{dat}}"/>{{dat}}</td>
 				<td>
-				<input type="text" id="kolicina" name="kolicina" value = "{{kolicina}}" placeholder="koliko" size="5" />
+				<input class="w3-input w3-border-0" type="text" id="kolicina" name="kolicina" value = "{{kolicina}}" placeholder="koliko" size="5" />
 			    </td>
 			   <td>
-				 <input type="submit" id="prodaj" value="prodaj" name="prodaj" class="gumbi"> 
+				 <!--<input type="submit" id="prodaj" value="prodaj" name="prodaj" class="gumbi"> -->
+				 <button class="w3-button w3-hover-black" style="font-size:16px">Prodaj <i class="fa fa-btc"></i></button>
 			    </td>
 			</form>
 			%end
 			</tr>
 	 </table>
+	 </div>
+	 
+	 <!---->
 	  
 
 	<!-- The Modal -->
@@ -68,14 +79,15 @@ Valute:
   <!-- Modal content -->
 	<div class="modal-content">
 		<div class="modal-header">
-		  <span class="close">&times;</span>
+		  <span class="close"><i class="fa fa-window-close-o"  style="font-size:20px;color:white"></i></span>
 		  <h3>Izberi valuto</h3>
 		</div>
 		<div class="modal-body">
 		  <p>Kriptovalute</p>
 		  
-		  
-		  <table>
+		<input class="w3-input w3-padding w3-border-0" type="text" placeholder="Išči kriptovaluto" id="myInput1" onkeyup="myFunction1()">
+		  <div class="w3-container">
+		  <table class="w3-table-all" id="myTable1">
 			<tr>
 			  <th>Valuta</th>
 			  <th>Vrednost $</th>
@@ -93,22 +105,22 @@ Valute:
 			  <td><input type="hidden" id="vrednost" name="vrednost" value = "{{vrednost}}"/>{{vrednost}}</td>
 			  <td><input type="hidden" id="evri" name="evri" value = "{{evri}}"/>{{evri}}</td>
 			  <td>
-				<input type="text" id="kolicina" name="kolicina" value = "{{kolicina}}" size="5" />
+				<input class="w3-input w3-border-0" type="text" id="kolicina" name="kolicina" value = "{{kolicina}}" placeholder="koliko" size="5" />
 			  </td>
 			   <td>
 				
-				   <input type="submit" id="kupi" value="Kupi" name="kupi" class="gumbi"> 
+				   <!--<input type="submit" id="kupi" value="Kupi" name="kupi" class="gumbi">-->
+				   <button class="w3-button w3-hover-black" style="font-size:16px">Kupi <i class="fa fa-btc"></i></button>
 				 
 			</td>
 			</tr>
 			</form>
 			%end
 		  </table>
-		  
-		  
+		</div>
 		</div>
 		<div class="modal-footer">
-		  <p>Test</p>
+		  <p><i class="fa fa-copyright"></i></p>
 		</div>
 	  </div>
 	  
