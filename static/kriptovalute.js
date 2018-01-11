@@ -40,6 +40,9 @@ function myFunction() {
         tr[i].style.display = "none";
       }
     }
+	else {
+		table.style.display = "none";
+	}
   }
 }
 
@@ -60,3 +63,4 @@ function myFunction1() {
     }
   }
 }
+

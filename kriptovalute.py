@@ -1,5 +1,38 @@
 import modeli, dobi_zneske
 from bottle import *
+import hashlib # racunaje md5
+
+secret = "to skrivnost je zelo tezko uganiti 1094107c907cw982982c42"
+
+def get_user(auto_login = True):
+    """Poglej cookie in ugotovi, kdo je prijavljeni uporabnik,
+       vrni njegov username in ime. Če ni prijavljen, presumeri
+       na stran za prijavo ali vrni None (advisno od auto_login).
+    """
+    # Dobimo username iz piškotka
+    username = request.get_cookie('mail', secret=secret)
+    # Preverimo, ali ta uporabnik obstaja
+    if username is not None:
+        c = baza.cursor()
+        c.execute("SELECT mail FROM oseba WHERE oseba=?",
+                  [username])
+        r = c.fetchone()
+        c.close ()
+        if r is not None:
+            # uporabnik obstaja, vrnemo njegove podatke
+            return r
+    # Če pridemo do sem, uporabnik ni prijavljen, naredimo redirect
+    if auto_login:
+        redirect('/prijava')
+    else:
+        return None
+
+def password_md5(s):
+    """Vrni MD5 hash danega UTF-8 niza. Gesla vedno spravimo v bazo
+       kodirana s to funkcijo."""
+    h = hashlib.md5()
+    h.update(s.encode('utf-8'))
+    return h.hexdigest()
 
 @get('/')
 def glavniMenu():
@@ -11,6 +44,7 @@ def static(filename):
 
 @get('/oseba/<id_st>')
 def oOsebi(id_st):
+    #m=get_user()
     if modeli.podatki(id_st) is not None:
         id, ime, priimek, mail, geslo = modeli.podatki(id_st)
         valute = modeli.seznam_valut()
@@ -20,6 +54,7 @@ def oOsebi(id_st):
 
 @post('/kupi')
 def nakup():
+    #mail = get_user()
     id = request.forms.id
     ime = request.forms.k
     vrednost = request.forms.vrednost
@@ -30,6 +65,7 @@ def nakup():
 
 @post('/prodaj')
 def prodaj():
+    #mail = get_user()
     id = request.forms.id
     ime = request.forms.valut
     vred = request.forms.vredn
@@ -73,12 +109,19 @@ def dodaj():
     ime = request.forms.ime
     priimek = request.forms.priimek
     mail = request.forms.mail
-    geslo = request.forms.geslo
+    geslo = password_md5(request.forms.geslo)
     if ime and priimek and mail and geslo:
+        je_v_bazi = modeli.mail_v_bazi(mail)
+        if je_v_bazi:
+            redirect('/registracija')
+            return template('registriraj.html', ime=None, priimek=None, mail=None, geslo=None, napaka = 'Uporabnik obstaja')
         modeli.dodaj_osebo(ime, priimek, mail, geslo)
         id_1 = modeli.id_st(mail)
+        response.set_cookie('username', mail, path='/oseba/'+str(id_1), secret=secret)
         redirect('/oseba/'+str(id_1))
-        return template('registriraj.html', ime = ime, priimek = priimek, mail = mail, geslo = geslo, napaka=napaka)
+        return template('registriraj.html', ime = ime, priimek = priimek, mail = mail, geslo = geslo, napaka=None)
+    redirect('/registracija')
+    return template('registriraj.html', ime=None, priimek=None, mail=None, geslo=None, napaka = 'Neveljavna registracija')
 
 @get('/prijava')
 def glavni():
@@ -88,19 +131,20 @@ def glavni():
 @post('/prijava')
 def glavni_p():
     mail = request.forms.mail
-    geslo = request.forms.geslo
+    geslo = password_md5(request.forms.geslo)
     id_s = modeli.id_st(mail)
     podatki =modeli.podatki(id_s)
     if podatki is not None:
         _, _, _, email, psw = podatki
         if email == mail and geslo == psw:
+            response.set_cookie('username', mail, path='/oseba/'+str(id_s), secret=secret)
             redirect('/oseba/'+str(id_s))
             return template('prijava.html', mail = mail, napaka=None, geslo = geslo)
         else:
             return template('prijava.html', mail=None, geslo=None, napaka='Neveljavna prijava')
     else:
-        return template('prijava.html', mail = None, geslo = None, napaka = 'Neveljavna prijava')
 
+        return template('prijava.html', mail = None, geslo = None, napaka = 'Izpolni polja')
 
 @get('/zapri_racun')
 def odstrani_g():
@@ -109,7 +153,7 @@ def odstrani_g():
 @post('/zapri_racun')
 def odstrani():
     mail = request.forms.mail
-    geslo = request.forms.geslo
+    geslo = password_md5(request.forms.geslo)
     id = modeli.id_st(mail)
     podatki = modeli.podatki(id)
     if podatki is not None:
@@ -139,6 +183,7 @@ def dodaj_valute():
 
 @get('/oseba/<id>/zgodovina')
 def zgodovina(id):
+    #mail = get_user()
     zgodovina_transakcij = modeli.vrni_zgodovino(id)
     zasluzek = modeli.zasluzek(id)
     return template('zgodovina.html',zasluzek=zasluzek,lastnistvo=zgodovina_transakcij)
@@ -146,6 +191,7 @@ def zgodovina(id):
 
 @get('/odjavi')
 def odjava():
+    response.delete_cookie('username')
     redirect('/')
 
 # poženemo strežnik na portu 8080, glej http://localhost:8080/

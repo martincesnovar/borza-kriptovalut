@@ -10,6 +10,12 @@ cur = con.cursor()
 #                                                                         #
 ###########################################################################
 
+def mail_v_bazi(mail):
+    sql = '''SELECT 1 FROM oseba WHERE mail = ?'''
+    cur = con.execute(sql, [mail])
+    return cur.fetchall()
+
+
 def podatki_vsi():
     '''funckija vrne vse lastnike'''
     sql = '''SELECT * FROM oseba'''
@@ -67,14 +73,6 @@ def poisci_osebo(ime, priimek):
         sezOseb.append([id, ime, priimek, mail, geslo])
     return sezOseb
 
-def dolzniki():
-    ''' funkcija vrne lastnike, ki dolgujejo denar'''
-    sql =''' SELECT id, ime, priimek, mail, stanje FROM oseba
-    WHERE stanje < 0'''
-    sezOseb = []
-    for id, ime, priimek, mail, stanje in con.execute(sql):
-        sezOseb.append([id, ime, priimek, mail, stanje])
-    return sezOseb
 
 def seznam_valut():
     sql = '''SELECT * FROM Valuta'''

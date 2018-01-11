@@ -10,7 +10,7 @@
 					  Mail
 					</td>
 					<td>
-					  <input type="email" name="mail" value="{{mail}}" placeholder = "Vnesi email"/>
+					  <input class="w3-input w3-padding" type="email" name="mail" value="{{mail}}" placeholder = "Vnesi email"/>
 					</td>
 				</tr>
 				<tr>
@@ -18,7 +18,7 @@
 					  Geslo
 					</td>
 					<td>
-					  <input type="password" name="geslo" value="{{geslo}}" placeholder = "Vnesi geslo"/>
+					  <input class="w3-input w3-padding" type="password" name="geslo" value="{{geslo}}" placeholder = "Vnesi geslo"/>
 					</td>
 				</tr>
 				<tr>
@@ -26,15 +26,18 @@
                     &nbsp;
                 </td>
                 <td class="gumb_dodaj">
-                  <input type="submit" value="Zapri račun" name="zapri" class="gumbi"/>
+                  <input class="w3-input w3-padding" type="submit" value="Zapri račun" name="zapri" class="w3-button"/>
                 </td>
             </tr>
         </table>
       </form>
     </div>
     %if napaka is not None:
-    <div class="vrstica napaka">
-    Napaka: {{napaka}}
-    </div>
+    	<div class="w3-panel w3-red w3-display-container">
+  <span onclick="this.parentElement.style.display='none'"
+  class="w3-button w3-red w3-large w3-display-topright">&times;</span>
+  <p>Napaka: {{napaka}}</p>
+</div>
+
     %end
 	
