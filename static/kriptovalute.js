@@ -25,11 +25,11 @@ window.onclick = function(event) {
 }
 
 
-function myFunction() {
+function myFunction(input, tabela) {
   var input, filter, table, tr, td, i;
-  input = document.getElementById("myInput");
+  input = document.getElementById(input);
   filter = input.value.toUpperCase();
-  table = document.getElementById("myTable");
+  table = document.getElementById(tabela);
   tr = table.getElementsByTagName("tr");
   for (i = 0; i < tr.length; i++) {
     td = tr[i].getElementsByTagName("td")[0];
@@ -40,27 +40,17 @@ function myFunction() {
         tr[i].style.display = "none";
       }
     }
-	else {
-		table.style.display = "none";
-	}
   }
 }
 
-function myFunction1() {
-  var input, filter, table, tr, td, i;
-  input = document.getElementById("myInput1");
-  filter = input.value.toUpperCase();
-  table = document.getElementById("myTable1");
-  tr = table.getElementsByTagName("tr");
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0];
-    if (td) {
-      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }
-  }
+
+function clean(){
+	var table, tr, td;
+	tabla = document.getElementsByTagName("table");
+	tr = table.getElementsByTagName("tr");
+	if (tr.length == 0){
+		tabla.style.display = "none";
+	}
 }
+
 

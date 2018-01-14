@@ -34,8 +34,8 @@ Zaslužek od prodaje: {{zasluzek}}<br/>
 	Valute:
 	</div>
 	
-	<div class="w3-container">
-	<input class="w3-input w3-border w3-padding" type="text" placeholder="Išči kriptovaluto" id="myInput" onkeyup="myFunction()">
+	<div class="w3-container"  onload="clean()">
+	<input class="w3-input w3-border w3-padding" type="text" placeholder="Išči kriptovaluto" id="myInput" onkeyup="myFunction('myInput', 'myTable')">
 	
 	 <table class="w3-table-all" id="myTable">
 			<tr class="w3-gray">
@@ -85,7 +85,7 @@ Zaslužek od prodaje: {{zasluzek}}<br/>
 		<div class="modal-body">
 		  <p>Kriptovalute</p>
 		  
-		<input class="w3-input w3-padding w3-border-0" type="text" placeholder="Išči kriptovaluto" id="myInput1" onkeyup="myFunction1()">
+		<input class="w3-input w3-padding w3-border-0" type="text" placeholder="Išči kriptovaluto" id="myInput1" onkeyup="myFunction('myInput1', 'myTable1')">
 		  <div class="w3-container">
 		  <table class="w3-table-all" id="myTable1">
 			<tr>
