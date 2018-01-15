@@ -50,8 +50,7 @@ def oOsebi(id_st):
         valute = modeli.seznam_valut()
         lastnistvo = modeli.vsi_podatki(id_st)
         zasluzek = modeli.zasluzek(id)
-        rezultat = modeli.seznam_valut()
-        return template('oseba.html', id=id, ime = ime, priimek=priimek, mail=mail,valute=valute,kolicina=None,lastnistvo=lastnistvo, zasluzek=zasluzek, rezultat=rezultat)
+        return template('oseba.html', id=id, ime = ime, priimek=priimek, mail=mail,valute=valute,kolicina=None,lastnistvo=lastnistvo, zasluzek=zasluzek)
 
 @post('/kupi')
 def nakup():
