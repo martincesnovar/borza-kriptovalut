@@ -30,9 +30,14 @@ def vrni_podatke():
           
 def datum(podatki):
     '''pretvori in vrne čas v obliki (leto, mesec, dan, ura, min, sek,_ ,_)'''
+    niz = ""
     if podatki is not None:
-        return time.gmtime(int(podatki))[:]
-    return time.gmtime()[:]
+        for x in time.gmtime(int(podatki))[:]:
+            niz += str(x)+'-'
+    else:
+        for x in time.gmtime()[:]:
+            niz += str(x)+'-'
+    return niz[:-8]
         
 
 def imena_valut(naslov='https://bittrex.com/api/v1.1/public/getcurrencies'):

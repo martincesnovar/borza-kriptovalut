@@ -1,8 +1,8 @@
-%rebase ('osnova.html', naslov='Oseba', navigator='/ Oseba')
-		 
+%rebase('osnova.html', naslov='Oseba', navigator='/ Oseba')
+
 <div class="navbar">
   <div class="dropdown">
-    <button class="dropbtn">Račun 
+    <button class="dropbtn">Račun
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-content">
@@ -11,9 +11,9 @@
       <a href="/odjavi">Odjava</a>
 	  <a href="/zapri_racun">Zapri račun</a>
     </div>
-  </div> 
+  </div>
   <div class="dropdown">
-    <button class="dropbtn">API 
+    <button class="dropbtn">API
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-content">
@@ -21,11 +21,11 @@
 	  <a href="https://www.bitstamp.net/api/ticker_hour/">Bitstamp</a>
 	  <a href="https://bittrex.com/api/v1.1/public/getcurrencies">Bitrex</a>
     </div>
-  </div> 
-  
+  </div>
+
 	<button id="myBtn" class="w3-button w3-hover-orange" style="font-size:16px; color:white;">Kupi kriptovalute <i class="fa fa-cart-plus"></i></button>
 
-	
+
 </div>
 <div id ="stanje" class="w3-panel w3-pale-green">
 Zaslužek od prodaje: {{zasluzek}}<br/>
@@ -33,10 +33,10 @@ Zaslužek od prodaje: {{zasluzek}}<br/>
 	<div>
 	Valute:
 	</div>
-	
+
 	<div class="w3-container"  onload="clean()">
 	<input class="w3-input w3-border w3-padding" type="text" placeholder="Išči kriptovaluto" id="myInput" onkeyup="myFunction('myInput', 'myTable')">
-	
+
 	 <table class="w3-table-all" id="myTable">
 			<tr class="w3-gray">
 			  <th>Valuta</th>
@@ -67,14 +67,22 @@ Zaslužek od prodaje: {{zasluzek}}<br/>
 			%end
 			</tr>
 	 </table>
+	 <div>
+	 <select id="selector">
+	 %for k, ime, spletna, vrednost, evri, cas in valute:
+	 <option id = {{k}} name={{k}} value={{k}}>{{ime}}</option>
+	 %end
+	 </select>
 	 </div>
-	 
+	 <div id="widget" style="width: 350px; min-height: 370px;"></div>
+	 </div>
+
 	 <!---->
-	  
+
 
 	<!-- The Modal -->
 	<div id="myModal" class="modal">
-	
+
 
   <!-- Modal content -->
 	<div class="modal-content">
@@ -84,7 +92,7 @@ Zaslužek od prodaje: {{zasluzek}}<br/>
 		</div>
 		<div class="modal-body">
 		  <p>Kriptovalute</p>
-		  
+
 		<input class="w3-input w3-padding w3-border-0" type="text" placeholder="Išči kriptovaluto" id="myInput1" onkeyup="myFunction('myInput1', 'myTable1')">
 		  <div class="w3-container">
 		  <table class="w3-table-all" id="myTable1">
@@ -108,10 +116,10 @@ Zaslužek od prodaje: {{zasluzek}}<br/>
 				<input class="w3-input w3-border-0" type="text" id="kolicina" name="kolicina" value = "{{kolicina}}" placeholder="koliko" size="5" />
 			  </td>
 			   <td>
-				
+
 				   <!--<input type="submit" id="kupi" value="Kupi" name="kupi" class="gumbi">-->
 				   <button class="w3-button w3-hover-black" style="font-size:16px">Kupi <i class="fa fa-btc"></i></button>
-				 
+
 			</td>
 			</tr>
 			</form>
@@ -123,8 +131,26 @@ Zaslužek od prodaje: {{zasluzek}}<br/>
 		  <p><i class="fa fa-copyright"></i></p>
 		</div>
 	  </div>
-	  
+
 	  <link href="/static/kriptovalute.css" rel="stylesheet">
-	  <script src="/static/kriptovalute.js"></script> 
+	  <script src="/static/kriptovalute.js"></script>
+
     </div>
-	
+
+<script type="text/javascript">
+baseUrl = "https://widgets.cryptocompare.com/";
+var embedder = document.getElementById("widget");
+(function (){
+var appName = encodeURIComponent(window.location.hostname);
+var e = document.getElementById("selector");
+var strUser = e.options[e.selectedIndex].value;
+if(appName==""){appName="local";}
+var s = document.createElement("script");
+s.type = "text/javascript";
+s.async = true;
+var theUrl = baseUrl+'serve/v1/coin/chart?fsym='+strUser+'&tsym=USD';
+s.src = theUrl + ( theUrl.indexOf("?") >= 0 ? "&" : "?") + "app=" + appName;
+embedder.appendChild(s);
+})();
+</script>
+
