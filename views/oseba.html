@@ -69,6 +69,7 @@ Zaslužek od prodaje: {{zasluzek}}<br/>
 	 </table>
 	 <div>
 	 <select id="selector" onchange="grafi()">
+	 <option selected>Izberi valuto</option>
 	 %for k, ime, spletna, vrednost, evri, cas in valute:
 	 <option id = {{k}} name={{k}} value={{k}} onclick="e=id">{{ime}}</option>
 	 %end
@@ -138,10 +139,12 @@ Zaslužek od prodaje: {{zasluzek}}<br/>
     </div>
 
 <script type="text/javascript">
+
+function grafi(){
+document.getElementById("widget").innerHTML = "";
 baseUrl = "https://widgets.cryptocompare.com/";
 var embedder = document.getElementById("widget");
-function grafi(){
-var appName = "local";
+var appName = "local"; 
 var e = document.getElementById("selector");
 var strUser = e.options[e.selectedIndex].value;
 var s = document.createElement("script");
