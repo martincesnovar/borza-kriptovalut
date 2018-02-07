@@ -22,17 +22,27 @@
 	  <a href="https://bittrex.com/api/v1.1/public/getcurrencies">Bitrex</a>
     </div>
   </div>
+  <div class="dropdown">
+    <button class="dropbtn">Zaslužek
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content">
+      <ul id="zasluzek"> {{zasluzek}}</ul>
+    </div>
+  </div>
+    <div class="dropdown">
+    <button class="dropbtn">Vrednost valut
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content">
+      <ul id="vrednost"> {{vsota}}</ul>
+    </div>
+  </div>
 
 	<button id="myBtn" class="w3-button w3-hover-orange" style="font-size:16px; color:white;">Kupi kriptovalute <i class="fa fa-cart-plus"></i></button>
 
 
 </div>
-<div id ="stanje" class="w3-panel w3-pale-green">
-Zaslužek od prodaje: {{zasluzek}}<br/>
-	</div>
-	<div>
-	Valute:
-	</div>
 
 	<div class="w3-container"  onload="clean()">
 	<input class="w3-input w3-border w3-padding" type="text" placeholder="Išči kriptovaluto" id="myInput" onkeyup="myFunction('myInput', 'myTable')">
