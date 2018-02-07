@@ -123,7 +123,7 @@ def dodaj():
     geslo = password_md5(request.forms.geslo)
     if ime and priimek and mail and geslo:
         je_v_bazi = modeli.mail_v_bazi(mail)
-        if je_v_bazi or mail=="admin@admin" and geslo == password_md5("admin"):
+        if je_v_bazi or mail=="admin@admin":
             redirect('/registracija')
             return template('registriraj.html', ime=None, priimek=None, mail=None, geslo=None, napaka = 'Uporabnik obstaja')
         modeli.dodaj_osebo(ime, priimek, mail, geslo)
