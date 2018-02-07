@@ -15,6 +15,11 @@ def mail_v_bazi(mail):
     cur = con.execute(sql, [mail])
     return cur.fetchall()
 
+def mail(username):
+    cur = con.execute("SELECT mail FROM oseba WHERE mail=(?)",
+                  [username])
+    return cur.fetchone()
+
 
 def podatki_vsi():
     '''funckija vrne vse lastnike'''
