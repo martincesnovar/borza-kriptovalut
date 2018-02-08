@@ -48,12 +48,16 @@ def oOsebi(id_st):
     mail=get_user()
     admin = get_administrator()
     uporabnik = modeli.podatki(id_st)
+    vsota = 0
     if admin or (uporabnik is not None and mail[0] == uporabnik[3]):
         id, ime, priimek, mail, geslo = uporabnik
         valute = modeli.seznam_valut()
         lastnistvo = modeli.vsi_podatki(id_st)
+        for _, _ , _, nova_vrednost, kol, _ in lastnistvo:
+            vsota+=nova_vrednost*kol
+        vsota = round(vsota,2)
         zasluzek = modeli.zasluzek(id)
-        return template('oseba.html', id=id, ime = ime, priimek=priimek, mail=mail,valute=valute,kolicina=None,lastnistvo=lastnistvo, zasluzek=zasluzek)
+        return template('oseba.html', id=id, ime = ime, priimek=priimek, mail=mail,valute=valute,kolicina=None,lastnistvo=lastnistvo, zasluzek=zasluzek, vsota=vsota)
     else:
         odjava()
 
