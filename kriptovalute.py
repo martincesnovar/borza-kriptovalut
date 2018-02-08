@@ -22,8 +22,8 @@ def get_user(auto_login = True):
         if r is not None:
             # uporabnik obstaja, vrnemo njegove podatke
             return r
-    # Če pridemo do sem, uporabnik ni prijavljen, naredimo redirect
-    if auto_login:
+    # Če pridemo do sem, uporabnik ni prijavljen, naredimo redirect, če ni administratorjevega coockie-ja
+    if auto_login and not get_administrator():
         redirect('/prijava')
     else:
         return None
