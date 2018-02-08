@@ -209,7 +209,6 @@ def odstrani():
 @get('/dodaj_valute')
 def dodaj_valute():
     if get_administrator():
-        modeli.dodaj_valute()
         rezultat = modeli.seznam_valut()
         redirect('/administrator/valute')
         return template('seznam_valut.html', rezultat=rezultat)
@@ -218,6 +217,21 @@ def dodaj_valute():
 def dodaj_valute():
     if get_administrator():
         modeli.dodaj_valute()
+        rezultat = modeli.seznam_valut()
+        redirect('/administrator/valute')
+        return template('seznam_valut.html', rezultat=rezultat)
+
+@get('/dodaj_nove_valute')
+def dodaj_valute():
+    if get_administrator():
+        rezultat = modeli.seznam_valut()
+        redirect('/administrator/valute')
+        return template('seznam_valut.html', rezultat=rezultat)
+
+@post('/dodaj_nove_valute')
+def dodaj_nove_valute():
+    if get_administrator():
+        modeli.dodaj_nove_valute()
         rezultat = modeli.seznam_valut()
         redirect('/administrator/valute')
         return template('seznam_valut.html', rezultat=rezultat)

@@ -162,13 +162,13 @@ def kupi_valuto(lastnik, valuta, vrednost, kolicina, datum = datetime.datetime.n
     con.commit()
 
 
-def _dodaj_valute():
+def _dodaj_valute(naslov = 'https://bittrex.com/api/v1.1/public/getcurrencies'):
     ''' funkcija doda kriptovaluto v bazo'''
     sql = '''INSERT INTO Valuta (id, ime)
               VALUES (?,?)'''
     napaka = None
     try:
-        for kratica, ime, _ in dobi_zneske.imena_valut('https://bittrex.com/api/v1.1/public/getcurrencies'):
+        for kratica, ime, _ in dobi_zneske.imena_valut(naslov):
             con.execute(sql,[kratica, ime])
     except Exception as e:
         napaka = e
@@ -178,11 +178,25 @@ def _dodaj_valute():
 
 def dodaj_valute():
     sql = '''DELETE FROM Valuta'''
-    a = _dodaj_valute()
-    if a:
+    if _dodaj_valute():
         con.execute(sql)
         con.commit()
     _dodaj_valute()
+    return
+
+def dodaj_nove_valute(naslov = 'https://bittrex.com/api/v1.1/public/getcurrencies'):
+    '''funkcija doda nove valute'''
+    sql = '''SELECT ime FROM valuta'''
+    sql_vstavi = '''INSERT INTO Valuta (id, ime)
+              VALUES (?,?)'''
+    mn = set()
+    for valuta, in con.execute(sql):
+        mn.add(valuta)
+    for kratica, ime, _ in dobi_zneske.imena_valut(naslov):
+        if ime not in mn:
+            con.execute(sql_vstavi,[kratica, ime])
+    con.commit()
+    return
         
     
 
