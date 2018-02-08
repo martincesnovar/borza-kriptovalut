@@ -138,6 +138,26 @@ def dodaj():
     redirect('/registracija')
     return template('registriraj.html', ime=None, priimek=None, mail=None, geslo=None, napaka = 'Neveljavna registracija')
 
+@get('/oseba/<id>/spremeni')
+def spremen(id):
+    return template('spremeni.html', ime = None, priimek = None, mail = get_user()[0], staro_geslo = None, geslo = None, napaka=None)
+
+@post('/spremeni')
+def spremeni():
+    mail = get_user()[0]
+    id = modeli.id_st(mail)
+    ime = request.forms.ime or modeli.ime(id)
+    priimek = request.forms.priimek or modeli.priimek(id)
+    staro_geslo = request.forms.staro_geslo
+    geslo = password_md5(request.forms.geslo)
+    if password_md5(staro_geslo) == modeli.geslo(id):
+        modeli.spremeni_osebo(id, ime, priimek, mail, geslo)
+    modeli.spremeni_osebo(id, ime, priimek, mail, modeli.geslo(id))
+    response.set_cookie('username', mail, path='/', secret=secret)
+    redirect('/oseba/'+str(id))
+    return template('spremeni.html', ime = ime, priimek = priimek, staro_geslo = staro_geslo, mail = mail, geslo = geslo, napaka=None)
+    
+
 @get('/prijava')
 def glavni():
     return template('prijava.html', mail = None, napaka=None, geslo = None)

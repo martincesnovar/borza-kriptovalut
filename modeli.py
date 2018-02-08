@@ -51,6 +51,14 @@ def priimek(id_st):
     for priimek in con.execute(sql,[id_st]):
         return priimek[0]
 
+def geslo(id_st):
+    '''funckija vrne md5 geslo lastnika z id_st-jem id'''
+    sql = '''SELECT geslo
+            FROM oseba
+            WHERE id = ?'''
+    for geslo in con.execute(sql,[id_st]):
+        return geslo[0]
+
 def id_st(mail):
     '''funckija vrne id lastnika z mailom
     za prijavo preko maila.'''

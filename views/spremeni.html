@@ -1,0 +1,63 @@
+%rebase ('osnova.html', naslov='spremeni', navigator='/spremeni')
+    <div class="vrstica">
+      <form method="post" action="/spremeni">
+		  <table>
+				<tr>
+					<td class="glava">
+					  Ime:
+					</td>
+					<td>
+					  <input class="w3-input w3-padding" type="text" name="ime" value="{{ime}}" placeholder = "Vnesi ime"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="glava">
+					  Priimek:
+					</td>
+					<td>
+					  <input class="w3-input w3-padding" type="text" name="priimek" value="{{priimek}}" placeholder = "Vnesi priimek"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="glava">
+					  Mail
+					</td>
+					<td>
+					  <input class="w3-input w3-padding" type="email" name="mail" value="{{mail}}" placeholder = "Vnesi email"/>
+					</td>
+				</tr>
+				<tr>
+				<td class="glava">
+					  Staro geslo
+					</td>
+					<td>
+					  <input class="w3-input w3-padding" type="password" name="staro_geslo" value="{{staro_geslo}}" placeholder = "Vnesi geslo"/>
+					</td>
+				</tr>
+					<td class="glava">
+					  Geslo
+					</td>
+					<td>
+					  <input class="w3-input w3-padding" type="password" name="geslo" value="{{geslo}}" placeholder = "Vnesi geslo"/>
+					</td>
+				</tr>
+				<tr>
+                <td>
+                    &nbsp;
+                </td>
+                <td class="gumb_dodaj">
+                  <input class="w3-input w3-padding" type="submit" value="spremeni" name="Spremeni" class="w3-button"/>
+                </td>
+            </tr>
+        </table>
+      </form>
+    </div>
+    %if napaka is not None:
+	<div class="w3-panel w3-red w3-display-container">
+  <span onclick="this.parentElement.style.display='none'"
+  class="w3-button w3-red w3-large w3-display-topright">&times;</span>
+  <p>Napaka: {{napaka}}</p>
+</div>
+
+    %end
+	
