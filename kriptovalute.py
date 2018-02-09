@@ -58,8 +58,7 @@ def oOsebi(id_st):
         vsota = round(vsota,2)
         zasluzek = modeli.zasluzek(id)
         return template('oseba.html', id=id, ime = ime, priimek=priimek, mail=mail,valute=valute,kolicina=None,lastnistvo=lastnistvo, zasluzek=zasluzek, vsota=vsota)
-    else:
-        odjava()
+    abort(401, 'Nimate pravic za ogled strani')
 
 
 @post('/kupi')
