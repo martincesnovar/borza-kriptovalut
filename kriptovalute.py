@@ -92,6 +92,7 @@ def prodaj():
 def administrator():
     if get_administrator():
         return template('administrator.html')
+    abort(401, 'Nimate pravic za ogled strani')
 
 @get('/administrator/osebe')
 def administrator_osebe():
@@ -101,12 +102,14 @@ def administrator_osebe():
         for el in rezultat:
             sez[el[0]]=modeli.zasluzek(el[0])
         return template('seznam_oseb.html', rezultat=rezultat,zasluzek=sez)
+    abort(401, 'Nimate pravic za ogled strani')
 
 @get('/administrator/valute')
 def administrator_valute():
     if get_administrator():
         rezultat = modeli.seznam_valut()
         return template('seznam_valut.html', rezultat=rezultat)
+    abort(401, 'Nimate pravic za ogled strani')
 
 @get('/isci')
 def isci():
