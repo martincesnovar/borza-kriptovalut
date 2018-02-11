@@ -1,0 +1,27 @@
+%rebase ('osnova.html', naslov='Luzerji', navigator='/ Luzerji')
+		 <div class="w3-panel w3-yellow w3-display-container">Prikazani tisti, ki so v minusu.</div>
+	 <table class="w3-table-all">
+			<tr class="w3-gray">
+			  <th>ID</th>
+			  <th>Ime</th>
+			  <th>Priimek</th>
+			  <th>Mail</th>
+			  <th>Stanje na računu</th>
+			  <th>Zbriši</th>
+			</tr>
+			
+			%for id, valuta, kolicina, cena, datum in lastnistvo:
+			<form action="zapri_racun_admin" method="POST">
+			<input type="hidden" id="id" name="id" value = "{{id}}"/>
+			<tr>
+				<td><a href="/oseba/{{id}}">{{id}}</a></td>
+				<td>{{valuta}}</td>
+				<td>{{kolicina}}</td>
+				<td>{{cena}}</td>
+				<td>{{datum}}</td>
+			   <td><button class="w3-btn w3-red w3-round-xxlarge" style="font-size:16px"><i class="fa fa-trash"></i> Zbriši uporabnika </button> </td>
+			</form>
+			%end
+			</tr>
+	 </table>
+	 

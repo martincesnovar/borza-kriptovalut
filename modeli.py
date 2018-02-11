@@ -133,7 +133,27 @@ Zgodovina.Oseba = (?)'''
     for el in con.execute(sql, [id]):
         sez.append(el)
     return sez
-    
+
+def izpis_lastnikov_valut():
+    sql = '''SELECT Oseba.ime, Oseba.priimek,Oseba.mail,valuta.ime,
+    lastnistvo_valut.kolicina, lastnistvo_valut.vrednost,lastnistvo_valut.Datum FROM Oseba 
+    JOIN lastnistvo_valut ON Oseba.id = lastnistvo_valut.lastnik
+    JOIN Valuta on Valuta.id = lastnistvo_valut.valuta'''
+    return list(con.execute(sql))
+
+def lozerji():
+    sql = '''SELECT id, ime, priimek, mail, -SUM(kolicina*cena) FROM Oseba
+    JOIN Zgodovina ON Oseba.id = Zgodovina.Oseba
+    GROUP BY mail
+    HAVING -SUM(kolicina*cena) < 0'''
+    return list(con.execute(sql))
+
+def vrednost_valut():
+    sql = '''
+    SELECT id, ime, priimek, mail, SUM(kolicina*vrednost) FROM lastnistvo_valut
+JOIN Oseba ON lastnistvo_valut.lastnik = Oseba.id
+GROUP BY mail'''
+    return list(con.execute(sql))
 
 ###########################################################################
 #                                                                         #

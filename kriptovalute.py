@@ -158,7 +158,14 @@ def spremeni():
     response.set_cookie('username', mail, path='/', secret=secret)
     redirect('/oseba/'+str(id))
     return template('spremeni.html', ime = ime, priimek = priimek, staro_geslo = staro_geslo, mail = mail, geslo = geslo, napaka=None)
-    
+
+@get('/administrator/luzerji')
+def luzerji():
+    if get_administrator():
+        rezultat = modeli.lozerji()
+        return template('loserji.html', lastnistvo=rezultat)
+    abort(401,'Nimate pravic za ogled strani')
+
 
 @get('/prijava')
 def glavni():
@@ -206,6 +213,27 @@ def odstrani():
         redirect('/zapri_racun')
         return template('zapri_racun.html', mail=mail, geslo=geslo, napaka='Nepravilno mail/geslo')
     return template('zapri_racun.html', mail=None, geslo=None, napaka=None)
+
+
+@get('/administrator/zapri_racun_admin')
+def zapri_racun_admin():
+    return template('luzerji.html', lastnistvo=None)
+
+@post('/administrator/zapri_racun_admin')
+def zapri_racun_admin():
+    id = request.forms.id
+    modeli.zapri_racun(id)
+    redirect('/administrator/luzerji')
+
+@get('/administrator/zapri_racun_adm')
+def zapri_racun_adm():
+    return template('seznam_oseb.html', lastnistvo=None)
+
+@post('/administrator/zapri_racun_adm')
+def zapri_racun_adm():
+    id = request.forms.id
+    modeli.zapri_racun(id)
+    redirect('/administrator/osebe')
 
 
 @get('/dodaj_valute')
