@@ -43,6 +43,7 @@ def dodaj_osebo(ime_baze):
         geslo   CHAR    NOT NULL
     );'''
     cur.execute(sql)
+    con.close()
 
 
 def dodaj_valute(ime_baze):
@@ -71,6 +72,7 @@ def dodaj_zgodovino(ime_baze):
                       NOT NULL
     );'''
     cur.execute(sql)
+    con.close()
 
 def dodaj_lastnistvo_valut(ime_baze):
     con = sqlite3.connect(ime_baze)
@@ -86,4 +88,4 @@ def dodaj_lastnistvo_valut(ime_baze):
                       DEFAULT (datetime('now') ) 
     );'''
     cur.execute(sql)
-
+    con.close()
