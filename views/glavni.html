@@ -1,13 +1,105 @@
 %rebase ('osnova.html', naslov='Valute', navigator='/')
-    <!-- Iskalna vrstica 
-    <div class="vrstica">
-      <span class="napis">Išči osebo</span>
-      <form method="get" action="/isci">
-            <input type="text" name="iskalniNiz"/>
-            <input type="submit" value="Išči" name="isci"/>
-      </form>
-    </div>-->
-	<div>
-	<a href="/registracija"> registracija </a>
-	<a href="/prijava"> prijava </a>
-	</div>
+	<head>
+	 <meta name="viewport" content="width=device-width, initial-scale=1" />
+     <link rel="stylesheet" href="/static/assets/css/main.css" />
+	</head>
+	
+	<header id="header">
+				<div class="inner">
+					<div class="logo">Borza kriptovalut</div>
+					<nav id="nav">
+						<a href="#footer">Prijava</a>
+						<a href="#registracija">Registracija</a>
+					</nav>
+					<a href="#navPanel" class="navPanelToggle"><span class="fa fa-bars"></span></a>
+				</div>
+			</header>
+
+		<!-- Banner -->
+			<section id="banner">
+				<div class="inner">
+					<header>
+						<h1>Welcome to Borza Kriptovalut</h1>
+					</header>
+
+					<footer>
+						<a href="#registracija" class="button">Registriraj se</a>
+						<a href="#footer" class="button">Prijava</a>
+					</footer>
+				</div>
+			</section>
+
+
+		<!-- Three -->
+			<section id="registracija" class="wrapper align-center">
+				<div class="inner">
+				<h3>Registracija</h3>
+					<div class="flex flex-2">
+					<form method="post" action="/registracija">
+					<div class="field half first">
+							<label for="name">Ime</label>
+							<input class="w3-input w3-border w3-light-grey" name="ime" id="ime" type="text" value="{{ime}}" placeholder="Ime">
+						</div>
+						<div class="field half">
+							<label for="subname">Priimek</label>
+							<input class="w3-input w3-border w3-light-grey" name="priimek" id="priimek" type="text" value="{{priimek}}" placeholder="Priimek">
+						</div>
+
+						<div class="field half first">
+							<label for="email">Email</label>
+							<input class="w3-input w3-border w3-light-grey" name="mail" id="name" type="text" value="{{mail}}" placeholder="Mail">
+						</div>
+						<div class="field half">
+							<label for="password">Geslo</label>
+							<input class="w3-input w3-border w3-light-grey" name="geslo" id="password" type="password" value="{{geslo}}" placeholder="Geslo">
+						</div>
+						<ul class="actions">
+							<li><input value="Registracija" class="w3-btn w3-white w3-round-xxlarge" type="submit"></li>
+						</ul>
+					</form>
+
+					</div>
+				</div>
+			</section>
+
+		<!-- Footer -->
+			<footer id="footer">
+				<div class="inner">
+
+					<h3>Prijava</h3>
+
+					<form method="post" action="/prijava">
+
+						<div class="field half first">
+							<label for="email">Email</label>
+							<input name="mail" id="name" type="text" value="{{mail}}" placeholder="Mail">
+						</div>
+						<div class="field half first">
+							<label for="password">Geslo</label>
+							<input name="geslo" id="password" type="password" value="{{geslo}}" placeholder="Geslo">
+						</div>
+						<ul class="actions">
+							<li><input value="Prijava" class="button alt" type="submit"></li>
+						</ul>
+					</form>
+					<br/>
+					<br/>
+				</div>
+			</footer>
+			<footer id = "foot">
+			<div class="copyright">
+			<div class="w3-panel w3-yellow w3-display-container">
+			<strong >You won't get any money!</strong>
+			</div>
+			
+			</br>
+				&copy; Untitled. Design: <a href="https://templated.co">TEMPLATED</a>. Images: <a href="https://unsplash.com">Unsplash</a>.</br>
+				&copy; Borza kriptovalut
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
