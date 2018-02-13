@@ -91,7 +91,8 @@ def prodaj():
 @get('/administrator')
 def administrator():
     if get_administrator():
-        return template('administrator.html')
+        valute = modeli.seznam_valut()
+        return template('administrator.html', valute=valute)
     abort(401, 'Nimate pravic za ogled strani')
 
 @get('/administrator/osebe')
