@@ -8,7 +8,7 @@
 				<div class="inner">
 					<div class="logo">Borza kriptovalut</div>
 					<nav id="nav">
-						<a href="#footer">Prijava</a>
+						<a href="#prijava">Prijava</a>
 						<a href="#registracija">Registracija</a>
 					</nav>
 					<a href="#navPanel" class="navPanelToggle"><span class="fa fa-bars"></span></a>
@@ -23,8 +23,8 @@
 					</header>
 
 					<footer>
-						<a href="#registracija" class="button">Registriraj se</a>
-						<a href="#footer" class="button">Prijava</a>
+						<a href="#registracija" class="button">Registriraj se</a> <br/><br/>
+						<a href="#prijava" class="button">Prijava</a>
 					</footer>
 				</div>
 			</section>
@@ -34,7 +34,6 @@
 			<section id="registracija" class="wrapper align-center">
 				<div class="inner">
 				<h3>Registracija</h3>
-					<div class="flex flex-2">
 					<form method="post" action="/registracija">
 					<div class="field half first">
 							<label for="name">Ime</label>
@@ -57,49 +56,66 @@
 							<li><input value="Registracija" class="w3-btn w3-white w3-round-xxlarge" type="submit"></li>
 						</ul>
 					</form>
-
-					</div>
 				</div>
 			</section>
 
 		<!-- Footer -->
-			<footer id="footer">
+			<section id="prijava" class="wrapper align-center">
+				
 				<div class="inner">
-
 					<h3>Prijava</h3>
-
 					<form method="post" action="/prijava">
 
 						<div class="field half first">
 							<label for="email">Email</label>
-							<input name="mail" id="name" type="text" value="{{mail}}" placeholder="Mail">
+							<input class="w3-input w3-border w3-light-grey" name="mail" id="name" type="text" value="{{mail}}" placeholder="Mail">
 						</div>
 						<div class="field half first">
 							<label for="password">Geslo</label>
-							<input name="geslo" id="password" type="password" value="{{geslo}}" placeholder="Geslo">
+							<input class="w3-input w3-border w3-light-grey" name="geslo" id="password" type="password" value="{{geslo}}" placeholder="Geslo">
 						</div>
 						<ul class="actions">
-							<li><input value="Prijava" class="button alt" type="submit"></li>
+							<li><input class="w3-btn w3-white w3-round-xxlarge" value="Prijava" class="button alt" type="submit"></li>
 						</ul>
 					</form>
-					<br/>
-					<br/>
 				</div>
-			</footer>
-			<footer id = "foot">
-			<div class="copyright">
-			<div class="w3-panel w3-yellow w3-display-container">
-			<strong >You won't get any money!</strong>
-			</div>
-			
-			</br>
-				&copy; Untitled. Design: <a href="https://templated.co">TEMPLATED</a>. Images: <a href="https://unsplash.com">Unsplash</a>.</br>
-				&copy; Borza kriptovalut
-				</div>
-			</footer>
+			</section>
+	<section id="grafi" class="wrapper align-center">
+	<select id="selector" onchange="grafi()">
+	 <option selected>Izberi valuto</option>
+	 %for k, ime, spletna, vrednost, evri, cas in valute:
+	 <option id = {{k}} name={{k}} value={{k}} onclick="e=id">{{ime}}</option>
+	 %end
+	 </select>
+	 <div id="widget" style="width: 310px; min-height: 370px;"></div>
+	 </section>
+	<footer id="footer">
+		<div class="copyright">
+			&copy; Untitled. Design: <a href="https://templated.co">TEMPLATED</a>. Images: <a href="https://unsplash.com">Unsplash</a>.</br>
+			&copy; Borza kriptovalut
+		</div>
+	</footer>
 
 		<!-- Scripts -->
+			<script type="text/javascript">
+			function grafi(){
+			document.getElementById("widget").innerHTML = "";
+			baseUrl = "https://widgets.cryptocompare.com/";
+			var embedder = document.getElementById("widget");
+			var appName = "local"; 
+			var e = document.getElementById("selector");
+			var strUser = e.options[e.selectedIndex].value;
+			var s = document.createElement("script");
+			s.type = "text/javascript";
+			s.async = true;
+			var theUrl = baseUrl+'serve/v1/coin/chart?fsym='+strUser+'&tsym=USD';
+			s.src = theUrl + ( theUrl.indexOf("?") >= 0 ? "&" : "?") + "app=" + appName;
+			embedder.appendChild(s);
+			};
+			</script>
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/skel.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			
+

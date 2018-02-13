@@ -37,7 +37,8 @@ def password_md5(s):
 
 @get('/')
 def glavniMenu():
-    return template('glavni.html', mail=None, geslo=None,ime=None,priimek=None)
+    valute = modeli.seznam_valut()
+    return template('glavni.html', mail=None, geslo=None,ime=None,priimek=None, valute=valute)
 
 @get('/static/<filename:path>')
 def static(filename):
