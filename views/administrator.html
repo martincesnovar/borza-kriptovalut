@@ -1,8 +1,73 @@
 %rebase ('osnova.html', naslov='Administrator', navigator='/ Administrator')
-    <div class="naslov_strani">
-       <a href="/administrator/osebe">Pregled oseb</a> <br/>
-	   <a href="/administrator/valute">Seznam valut</a> <br/>
-	   <a href="/administrator/luzerji">Luzerji</a> <br/>
-	   <a href="/odjava">Odjavi</a>
-    </div>
 	
+	<head>
+	 <meta name="viewport" content="width=device-width, initial-scale=1" />
+     <link rel="stylesheet" href="/static/assets/css/main.css" />
+	</head>
+	
+	<header id="header">
+				<div class="inner">
+					<div class="logo">Borza kriptovalut</div>
+					<nav id="nav">
+						<a href="/administrator/valute">Pregled valut</a>
+						<a href="/administrator/osebe">Pregled oseb</a>
+						<a href="/administrator/luzerji">Luzerji</a>
+						<a href="/odjava">Odjavi</a>
+					</nav>
+					<a href="#navPanel" class="navPanelToggle"><span class="fa fa-bars"></span></a>
+				</div>
+			</header>
+
+		<!-- Banner -->
+			<section id="banner">
+				<div class="inner">
+					<header>
+						<h1>ADMINISTRATOR</h1>
+					</header>
+
+					<footer>
+						<a href="/administrator/valute" class="button">Valute</a> <br/><br/>
+						<a href="/administrator/osebe" class="button">Osebe</a>
+					</footer>
+				</div>
+			</section>
+
+
+
+	<section id="grafi" class="wrapper align-center">
+	<select id="selector" onchange="grafi()">
+	 <option selected>Izberi valuto</option>
+	 %for k, ime, spletna, vrednost, evri, cas in valute:
+	 <option id = {{k}} name={{k}} value={{k}} onclick="e=id">{{ime}}</option>
+	 %end
+	 </select>
+	 <div id="widget" style="width: 310px; min-height: 370px;"></div>
+	 </section>
+	<footer id="footer">
+		<div class="copyright">
+			&copy; Untitled. Design: <a href="https://templated.co">TEMPLATED</a>. Images: <a href="https://unsplash.com">Unsplash</a>.</br>
+			&copy; Borza kriptovalut
+		</div>
+	</footer>
+
+		<!-- Scripts -->
+			<script type="text/javascript">
+			function grafi(){
+			document.getElementById("widget").innerHTML = "";
+			baseUrl = "https://widgets.cryptocompare.com/";
+			var embedder = document.getElementById("widget");
+			var appName = "local"; 
+			var e = document.getElementById("selector");
+			var strUser = e.options[e.selectedIndex].value;
+			var s = document.createElement("script");
+			s.type = "text/javascript";
+			s.async = true;
+			var theUrl = baseUrl+'serve/v1/coin/chart?fsym='+strUser+'&tsym=USD';
+			s.src = theUrl + ( theUrl.indexOf("?") >= 0 ? "&" : "?") + "app=" + appName;
+			embedder.appendChild(s);
+			};
+			</script>
+			<script src="/static/assets/js/jquery.min.js"></script>
+			<script src="/static/assets/js/skel.min.js"></script>
+			<script src="/static/assets/js/util.js"></script>
+			<script src="/static/assets/js/main.js"></script>
