@@ -38,7 +38,7 @@ def password_md5(s):
 @get('/')
 def glavniMenu():
     valute = modeli.seznam_valut()
-    return template('glavni.html', mail=None, geslo=None,ime=None,priimek=None, valute=valute)
+    return template('glavni.html', mail=None, geslo=None,ime=None,priimek=None, valute=valute,napaka_registriraj=None,napaka_prijava=None)
 
 @get('/static/<filename:path>')
 def static(filename):
@@ -59,7 +59,7 @@ def oOsebi(id_st):
         vsota = round(vsota,2)
         zasluzek = modeli.zasluzek(id)
         return template('oseba.html', id=id, ime = ime, priimek=priimek, mail=mail,valute=valute,kolicina=None,lastnistvo=lastnistvo, zasluzek=zasluzek, vsota=vsota)
-    abort(401, 'Nimate pravic za ogled strani')
+    abort(404,"Not found: '/oseba/{0}'".format(id_st))
 
 
 @post('/kupi')
@@ -93,7 +93,7 @@ def administrator():
     if get_administrator():
         valute = modeli.seznam_valut()
         return template('administrator.html', valute=valute)
-    abort(401, 'Nimate pravic za ogled strani')
+    abort(404,"Not found: '/administrator'")
 
 @get('/administrator/osebe')
 def administrator_osebe():
@@ -103,14 +103,14 @@ def administrator_osebe():
         for el in rezultat:
             sez[el[0]]=modeli.zasluzek(el[0])
         return template('seznam_oseb.html', rezultat=rezultat,zasluzek=sez)
-    abort(401, 'Nimate pravic za ogled strani')
+    abort(404,"Not found: '/administrator/osebe")
 
 @get('/administrator/valute')
 def administrator_valute():
     if get_administrator():
         rezultat = modeli.seznam_valut()
         return template('seznam_valut.html', rezultat=rezultat)
-    abort(401, 'Nimate pravic za ogled strani')
+    abort(404,"Not found: '/administrator/valute")
 
 @get('/isci')
 def isci():
@@ -121,7 +121,7 @@ def isci():
 
 @get('/registracija')
 def glavni_r():
-    return template('registriraj.html', ime = None, priimek = None, mail = None, napaka=None, geslo = None)
+    return template('registriraj.html', ime = None, priimek = None, mail = None, napaka_registriraj=None, geslo = None)
 
 @post('/registracija')
 def dodaj():
@@ -133,14 +133,15 @@ def dodaj():
         je_v_bazi = modeli.mail_v_bazi(mail)
         if je_v_bazi or mail=="admin@admin":
             redirect('/registracija')
-            return template('registriraj.html', ime=None, priimek=None, mail=None, geslo=None, napaka = 'Uporabnik obstaja')
+            return template('registriraj.html', ime=None, priimek=None, mail=None, geslo=None, napaka_registriraj = 'Uporabnik obstaja')
         modeli.dodaj_osebo(ime, priimek, mail, geslo)
         id_1 = modeli.id_st(mail)
         response.set_cookie('username', mail, path='/', secret=secret)
         redirect('/oseba/'+str(id_1))
-        return template('registriraj.html', ime = ime, priimek = priimek, mail = mail, geslo = geslo, napaka=None)
-    redirect('/registracija')
-    return template('registriraj.html', ime=None, priimek=None, mail=None, geslo=None, napaka = 'Neveljavna registracija')
+        return template('registriraj.html', ime = ime, priimek = priimek, mail = mail, geslo = geslo, napaka_registriraj=None)
+    #redirect('/registracija')
+    redirect('/#registracija')
+    return template('registriraj.html', ime=None, priimek=None, mail=None, geslo=None, napaka_registriraj = 'Neveljavna registracija')
 
 @get('/oseba/<id>/spremeni')
 def spremen(id):
@@ -148,7 +149,7 @@ def spremen(id):
 
 @post('/spremeni')
 def spremeni():
-    mail = get_user()[0]
+    mail = None or get_user()[0]
     id = modeli.id_st(mail)
     ime = request.forms.ime or modeli.ime(id)
     priimek = request.forms.priimek or modeli.priimek(id)
@@ -166,12 +167,12 @@ def luzerji():
     if get_administrator():
         rezultat = modeli.lozerji()
         return template('loserji.html', lastnistvo=rezultat)
-    abort(401,'Nimate pravic za ogled strani')
+    abort(404,"Not found: '/administrator/luzerji")
 
 
 @get('/prijava')
 def glavni():
-    return template('prijava.html', mail = None, napaka=None, geslo = None)
+    return template('prijava.html', mail = None, napaka_prijava=None, geslo = None)
 
 
 @post('/prijava')
@@ -181,7 +182,7 @@ def glavni_p():
     if mail == "admin@admin" and geslo == password_md5("admin"):
         response.set_cookie('administrator', mail, path='/', secret=secret)
         redirect('/administrator')
-        return template('prijava.html', mail = mail, napaka=None, geslo = geslo)
+        return template('prijava.html', mail = mail, napaka_prijava=None, geslo = geslo)
     id_s = modeli.id_st(mail)
     podatki = modeli.podatki(id_s)
     if podatki is not None:
@@ -189,12 +190,13 @@ def glavni_p():
         if email == mail and geslo == psw:
             response.set_cookie('username', mail, path='/', secret=secret)
             redirect('/oseba/'+str(id_s))
-            return template('prijava.html', mail = mail, napaka=None, geslo = geslo)
+            return template('prijava.html', mail = mail, napaka_prijava=None, geslo = geslo)
         else:
-            return template('prijava.html', mail=None, geslo=None, napaka='Neveljavna prijava')
+            redirect('/#prijava')
+            return template('prijava.html', mail=None, geslo=None, napaka_prijava='Neveljavna prijava')
     else:
-
-        return template('prijava.html', mail = None, geslo = None, napaka = 'Izpolni polja')
+        redirect('/#prijava')
+        return template('prijava.html', mail = None, geslo = None, napaka_prijava = 'Izpolni polja')
 
 @get('/zapri_racun')
 def odstrani_g():
@@ -219,7 +221,9 @@ def odstrani():
 
 @get('/administrator/zapri_racun_admin')
 def zapri_racun_admin():
-    return template('luzerji.html', lastnistvo=None)
+    if get_administrator():
+        return template('loserji.html', lastnistvo=modeli.lozerji())
+    abort(404,"Not found: '/administrator/zapri_racun_admin")
 
 @post('/administrator/zapri_racun_admin')
 def zapri_racun_admin():
@@ -229,7 +233,9 @@ def zapri_racun_admin():
 
 @get('/administrator/zapri_racun_adm')
 def zapri_racun_adm():
-    return template('seznam_oseb.html', lastnistvo=None)
+    if get_administrator():
+        return template('seznam_oseb.html', rezultat=modeli.podatki_vsi())
+    abort(404,"Not found: '/administrator/zapri_racun_admin")
 
 @post('/administrator/zapri_racun_adm')
 def zapri_racun_adm():
@@ -244,6 +250,7 @@ def dodaj_valute():
         rezultat = modeli.seznam_valut()
         redirect('/administrator/valute')
         return template('seznam_valut.html', rezultat=rezultat)
+    abort(404,"Not found: '/dodaj_valute")
 
 @post('/dodaj_valute')
 def dodaj_valute():
@@ -259,6 +266,7 @@ def dodaj_valute():
         rezultat = modeli.seznam_valut()
         redirect('/administrator/valute')
         return template('seznam_valut.html', rezultat=rezultat)
+    abort(404,"Not found: '/dodaj_nove_valute")
 
 @post('/dodaj_nove_valute')
 def dodaj_nove_valute():

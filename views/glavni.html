@@ -1,4 +1,4 @@
-%rebase ('osnova.html', naslov='Valute', navigator='/')
+%rebase ('osnova.html', naslov='Borza Kriptovalut', navigator='/')
 	<head>
 	 <meta name="viewport" content="width=device-width, initial-scale=1" />
      <link rel="stylesheet" href="/static/assets/css/main.css" />
@@ -56,6 +56,13 @@
 							<li><input value="Registracija" class="w3-btn w3-white w3-round-xxlarge" type="submit"></li>
 						</ul>
 					</form>
+					%if napaka_registriraj is not None:
+					<div class="w3-panel w3-red w3-display-container">
+					<span onclick="this.parentElement.style.display='none'"
+					class="w3-button w3-red w3-large w3-display-topright">&times;</span>
+					<p>Napaka: {{napaka_registriraj}}</p>
+					</div>
+					%end
 				</div>
 			</section>
 
@@ -78,7 +85,15 @@
 							<li><input class="w3-btn w3-white w3-round-xxlarge" value="Prijava" class="button alt" type="submit"></li>
 						</ul>
 					</form>
+					
 				</div>
+				%if napaka_prijava is not None:
+					<div class="w3-panel w3-red w3-display-container">
+					<span onclick="this.parentElement.style.display='none'"
+					class="w3-button w3-red w3-large w3-display-topright">&times;</span>
+					<p>Napaka: {{napaka_registriraj}}</p>
+					</div>
+					%end
 			</section>
 	<section id="grafi" class="wrapper align-center">
 	<select id="selector" onchange="grafi()">
