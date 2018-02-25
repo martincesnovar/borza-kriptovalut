@@ -1,5 +1,6 @@
 %rebase ('osnova.html', naslov='Valute', navigator='/ Valute')
     <div class="naslov_strani">
+	
 	   <table class="w3-table">
         <tr>
           <th>
@@ -19,13 +20,12 @@
 	   </th>
 	   </tr>
 	   </table>
-	
-	   
 	   Izpis valut
     </div>
-	
 	<div class="vrstica">
-      <table>
+	<input class="w3-input w3-padding w3-border-0" type="text" placeholder="Išči kriptovaluto" id="myInput1" onkeyup="myFunction('myInput1', 'myTable1')">
+		  <div class="w3-container">
+      <table id="myTable1">
         <tr>
           <th>Kratica</th>
           <th>Ime</th>
@@ -51,3 +51,4 @@
         %end
       </table>
     </div>
+	<script src="/static/kriptovalute.js"></script>
