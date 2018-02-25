@@ -29,15 +29,31 @@ def vrni_podatke():
 
           
 def datum(podatki):
-    '''pretvori in vrne čas v obliki (leto, mesec, dan, ura, min, sek,_ ,_)'''
+    '''pretvori in vrne čas v obliki leto-mesec-dan  ura:minuta:sekunde'''
     niz = ""
     if podatki is not None:
+        k=0
         for x in time.gmtime(int(podatki))[:]:
-            niz += str(x)+'-'
+            niz += izpis_datuma(x, k)
+            k+=1  
     else:
+        k=0
         for x in time.gmtime()[:]:
-            niz += str(x)+'-'
+            niz += izpis_datuma(x, k)
+            k+=1
     return niz[:-8]
+
+
+def izpis_datuma(x, k):
+    '''izpis'''
+    niz = ''
+    if k<2:
+        niz += str(x)+'-'
+    elif k==2:
+        niz+= str(x) + '  '
+    else:
+        niz+= str(x)+':'
+    return niz
         
 
 def imena_valut(naslov='https://bittrex.com/api/v1.1/public/getcurrencies'):

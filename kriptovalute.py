@@ -145,7 +145,9 @@ def dodaj():
 
 @get('/oseba/<id>/spremeni')
 def spremen(id):
-    return template('spremeni.html', ime = None, priimek = None, mail = get_user()[0], staro_geslo = None, geslo = None, napaka=None)
+    if get_user() is not None:
+        return template('spremeni.html', ime = None, priimek = None, mail = get_user()[0], staro_geslo = None, geslo = None, napaka=None)
+    return template('spremeni.html', ime = None, priimek = None, mail = None, staro_geslo = None, geslo = None, napaka=None)
 
 @post('/spremeni')
 def spremeni():
@@ -219,28 +221,33 @@ def odstrani():
     return template('zapri_racun.html', mail=None, geslo=None, napaka=None)
 
 
-@get('/administrator/zapri_racun_admin')
-def zapri_racun_admin():
-    if get_administrator():
-        return template('loserji.html', lastnistvo=modeli.lozerji())
-    abort(404,"Not found: '/administrator/zapri_racun_admin")
-
 @post('/administrator/zapri_racun_admin')
 def zapri_racun_admin():
     id = request.forms.id
     modeli.zapri_racun(id)
     redirect('/administrator/luzerji')
 
-@get('/administrator/zapri_racun_adm')
-def zapri_racun_adm():
-    if get_administrator():
-        return template('seznam_oseb.html', rezultat=modeli.podatki_vsi())
-    abort(404,"Not found: '/administrator/zapri_racun_admin")
 
 @post('/administrator/zapri_racun_adm')
 def zapri_racun_adm():
     id = request.forms.id
     modeli.zapri_racun(id)
+    redirect('/administrator/osebe')
+
+@post('/administrator/zbrisi_valute')
+def zbrisi_valuto():
+    id = request.forms.id
+    modeli.zbrisi_valuto(id)
+    redirect('/administrator/valute')
+
+@post('/odstrani_valute')
+def zbrisi_valute():
+    modeli.zbrisi_valute()
+    redirect('/administrator/valute')
+
+@post('/zbrisi_osebe')
+def zbrisi_osebe():
+    modeli.zbrisi_vse_osebe()
     redirect('/administrator/osebe')
 
 

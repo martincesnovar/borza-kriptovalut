@@ -1,7 +1,26 @@
 %rebase ('osnova.html', naslov='Valute', navigator='/ Valute')
     <div class="naslov_strani">
-	   <a href="/dodaj_valute">Dodaj valute</a></br>
-	   <a href="/dodaj_nove_valute">Dodaj nove valute</a></br>
+	   <table class="w3-table">
+        <tr>
+          <th>
+		  <form action="/dodaj_valute" method="POST">
+	   <button class="w3-btn w3-green"> Posodobi seznam valut </button>
+	   </form>
+	   </th>
+          <th>
+		  <form action="/dodaj_nove_valute" method="POST">
+	   <button class="w3-btn w3-green"> Dodaj nove valute (ne odstrani starih) </button>
+	   </form>
+	   </th>
+	   <th>
+		  <form action="/odstrani_valute" method="POST">
+	   <button class="w3-btn w3-red"> Odstrani vse valute </button>
+	   </form>
+	   </th>
+	   </tr>
+	   </table>
+	
+	   
 	   Izpis valut
     </div>
 	
@@ -13,14 +32,21 @@
 		  <th>Vrednost $</th>
 		  <th>Vrednost €</th>
 		  <th>Čas</th>
+		  <th></th>
         </tr>
         %for kratica, ime, spletna, vrednost, evri, cas in rezultat:
         <tr>
+		<form action="/administrator/zbrisi_valute" method="POST">
+		<input type="hidden" id="{{kratica}}" name="id" value = "{{kratica}}"/>
           <td><a href ="{{spletna}}">{{kratica}}</a></td>
           <td>{{ime}}</td>
 		  <td>{{vrednost}}</td>
 		  <td>{{evri}}</td>
 		  <td>{{cas}}</td>
+		  <td>
+		  <button class="w3-btn w3-red"> Zbrisi valuto </button>
+		  </td>
+		  </form>
         </tr>
         %end
       </table>

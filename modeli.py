@@ -141,6 +141,14 @@ def izpis_lastnikov_valut():
     JOIN Valuta on Valuta.id = lastnistvo_valut.valuta'''
     return list(con.execute(sql))
 
+def izpis_lastnikov_valute(valuta):
+    sql = '''SELECT Oseba.ime, Oseba.priimek,Oseba.mail,valuta.ime,
+    lastnistvo_valut.kolicina, lastnistvo_valut.vrednost,lastnistvo_valut.Datum FROM Oseba 
+    JOIN lastnistvo_valut ON Oseba.id = lastnistvo_valut.lastnik
+    JOIN Valuta on Valuta.id = lastnistvo_valut.valuta
+    WHERE Valuta.id = (?)'''
+    return list(con.execute(sql,[valuta]))
+
 def lozerji():
     sql = '''SELECT id, ime, priimek, mail, -SUM(kolicina*cena) FROM Oseba
     JOIN Zgodovina ON Oseba.id = Zgodovina.Oseba
@@ -149,6 +157,7 @@ def lozerji():
     return list(con.execute(sql))
 
 def vrednost_valut():
+    '''vrne koliko imajo osebe vredne valute'''
     sql = '''
     SELECT id, ime, priimek, mail, SUM(kolicina*vrednost) FROM lastnistvo_valut
 JOIN Oseba ON lastnistvo_valut.lastnik = Oseba.id
@@ -254,6 +263,38 @@ def zbrisi_zgodovino(lastnik):
     con.execute(sql,[lastnik])
     con.commit()
 
+def zbrisi_zgodovino_valuta(id):
+    sql = '''DELETE FROM Zgodovina
+              WHERE (?) = Valuta'''
+    con.execute(sql,[id])
+    con.commit()
+
+def _zbrisi_valuto(id):
+    sql = '''DELETE FROM Valuta
+    WHERE id = (?)'''
+    con.execute(sql,[id])
+    con.commit()
+
+def _zbrisi_valute(id):
+    sql = '''DELETE FROM Valuta'''
+    con.execute(sql)
+    con.commit()
+
+def zbrisi_valuto(id):
+    for _, _, mail, _, kolicina, cena, _ in izpis_lastnikov_valute(id):
+        id_s = id_st(mail)
+        prodaj_valuto(id_s,id,kolicina,cena,True)
+        zbrisi_zgodovino_valuta(id)
+    _zbrisi_valuto(id)
+
+def zbrisi_valute():
+    for valuta,_,_,_,_,_ in seznam_valut():
+        zbrisi_valuto(valuta)
+
+def zbrisi_vse_osebe():
+    for id,_,_,_,_ in podatki_vsi():
+        zapri_racun(id)
+
 
 def _zbrisi_osebo(id_osebe):
     ''' funkcija odstrani osebo'''
@@ -267,8 +308,8 @@ def zapri_racun(id_osebe):
     sql = '''SELECT * FROM lastnistvo_valut
     WHERE lastnik = (?)'''
     for id_o, id_valute, vrednost, kolicina, _ in con.execute(sql,[id_osebe]):
-        zbrisi_zgodovino(int(id_osebe))
         prodaj_valuto(int(id_osebe), id_valute, kolicina,0.0,True)
+        zbrisi_zgodovino(int(id_osebe))
     _zbrisi_osebo(id_osebe)
 
 
